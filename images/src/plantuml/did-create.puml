@@ -24,14 +24,11 @@ group optional
     USR -> USR: create DID Document Template
 end
 |||
-
 USR -> RES: create DID
 |||
-
 RES -> STR: store DID Document Template
 STR --> RES: return transaction hash -> txh_s
 |||
-
 RES -> ATTE: self attest account
 note right
     accountProperty: {
@@ -41,7 +38,6 @@ note right
 end note
 ATTE --> RES: return transaction hash -> txh_d
 |||
-
 RES --> USR: return DID (did:baa:<txh_d>)
 
 

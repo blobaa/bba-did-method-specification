@@ -18,7 +18,10 @@ end box
 
 USR -> RES: read DID (did:baa:<txh_d>)
 |||
+
+
 == parse DID Controller Path ==
+
 loop
     alt is first iteration
         RES -> TXR: get initial attestation transaction (txh_d)
@@ -47,12 +50,18 @@ loop
     end
 end
 |||
+
+
 == get DID Document Template ==
+
 RES -> RES: extract cloud storage tx hash (txh_s)
 RES -> STR: get did document template (txh_s)
 RES -> RES: check if did document template is self-set 
 |||
+
+
 == return DID Document ==
+
 RES -> RES: prepare DID Document
 RES --> USR: return DID Document
 
