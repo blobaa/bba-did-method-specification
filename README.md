@@ -13,7 +13,7 @@ ardor-tx-hash = 64HEXDIG
 
 
 
-did:bba:m:f30e8cff75e5111da9943c123733d697120914bbef1b5010732ad409cbf29ee2
+`did:bba:m:f30e8cff75e5111da9943c123733d697120914bbef1b5010732ad409cbf29ee2`
 
 
 https://tools.ietf.org/html/rfc5234
