@@ -22,7 +22,25 @@ http://cryptocoinjs.com/modules/misc/bs58/
 
 
 
-## Props
+
+## CRUD
+
+### Create
+
+![](images/out/images/src/plantuml/did-create.svg)
 
 
+### Read
+
+![](images/out/images/src/plantuml/did-read.svg)
+
+
+### Update
+
+![](images/out/images/src/plantuml/did-update.svg)
+
+
+### Deactivate
+
+![](images/out/images/src/plantuml/did-delete.svg)
 

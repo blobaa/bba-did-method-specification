@@ -1,0 +1,8 @@
+{
+    "plantuml.exportOutDir": "images/out",
+    "plantuml.exportSubFolder": false,
+    "editor.autoIndent": "none",
+    "editor.tabSize": 4,
+    "markdown.extension.list.indentationSize": "inherit",
+    "editor.wordWrap": "on"
+}

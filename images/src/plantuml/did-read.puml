@@ -1,0 +1,60 @@
+@startuml
+skinparam BoxPadding 15
+skinparam ParticipantPadding 15
+
+
+participant "Verifier" as USR
+participant "DID Resolver" as RES
+box "ARDOR Blockchain" #WhiteSmoke
+    participant "Account" as ATTE
+    participant "New Account" as NATTE
+    participant "Tx Resolver" as TXR
+    participant "Cloud Storage" as STR
+end box
+
+
+== DID Resolution ==
+
+
+USR -> RES: read DID (did:baa:<txh_d>)
+|||
+== parse DID Controller Path ==
+loop
+    alt is first iteration
+        RES -> TXR: get initial attestation transaction (txh_d)
+        RES -> RES: save account name
+    else
+        RES -> NATTE: get initial attestation transaction
+        RES -> RES: treat new account\nas current account
+    end
+    RES -> RES: check if tx is\naccount property
+    RES -> RES: check if account\nproperty is self-set
+    RES -> RES: check account\nproperty name (didId)
+    RES -> RES: check formal validity of\nattestation string
+    RES -> RES: check if attestation is active
+    |||
+    RES -> ATTE: get self-set\nattestation properties
+    loop over found attestations
+        RES -> RES: parse attestation
+        alt is account deprecated
+            RES -> RES: break loop
+        else is account deactivated
+            RES -> RES: stop DID resolution
+        end
+    end
+    alt is account active
+        RES -> RES: break loop
+    end
+end
+|||
+== get DID Document Template ==
+RES -> RES: extract cloud storage tx hash (txh_s)
+RES -> STR: get did document template (txh_s)
+RES -> RES: check if did document template is self-set 
+|||
+== return DID Document ==
+RES -> RES: prepare DID Document
+RES --> USR: return DID Document
+
+
+@enduml

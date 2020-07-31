@@ -1,0 +1,54 @@
+@startuml
+skinparam BoxPadding 15
+skinparam ParticipantPadding 15
+
+
+participant "DID Controller" as USR
+participant "DID Resolver" as RES
+box "ARDOR Blockchain" #WhiteSmoke
+    participant "Account" as ATTE
+    participant "New Account\n(ARDOR-\n1111-1111-1111-11111)" as NATTE
+    participant "Tx Resolver" as TXR
+    participant "Cloud Storage" as STR
+end box
+
+
+== DID Payload Update ==
+
+USR -> RES: update DID\n(new DID Document Template)
+|||
+RES -> TXR: get attestation property (see DID Resolution)
+RES -> STR: store new DID Document Template
+STR --> RES: return transaction hash -> ntxh_s
+RES -> ATTE: self-update attestation
+note right
+    accountProperty: {
+        property: did://<did id>,
+        value: 001|a|0000-0000-0000-00000|c|<ntxh_s>
+    }
+end note
+|||
+
+
+== DID Account Update ==
+
+USR -> RES: update DID (new account)
+|||
+RES -> TXR: get attestation property (see DID Resolution)
+RES -> ATTE: self-update attestation
+note right
+    accountProperty: {
+        pproperty: did://<did id>,
+        value: 001|d|1111-1111-1111-11111|c|<ntxh_s>
+    }
+end note
+RES -> NATTE: self-attest new account
+note right
+    accountProperty: {
+        property: did://<did id>,
+        value: 001|a|0000-0000-0000-00000|c|<ntxh_s>
+    }
+end note
+
+
+@enduml
