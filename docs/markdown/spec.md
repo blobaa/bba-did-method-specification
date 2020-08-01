@@ -31,8 +31,6 @@ Current version: 1.0.0
             - [Ardor Cloud Storage](#ardor-cloud-storage)
         - [DID Document Template Reference](#did-document-template-reference)
     - [Method-specific DID syntax](#method-specific-did-syntax)
-            - [mainnet:](#mainnet)
-            - [testnet:](#testnet)
     - [CRUD](#crud)
         - [Create](#create)
         - [Read](#read)
@@ -56,7 +54,7 @@ In the following, creating and updating account properties is called attestation
 
 ## Method Data Fields
 
-Since the `bba` method utilizes the account property feature, most of its data fields are embedded into the *value* key/value pair of a property. In Ardor, an account property is represented as a JSON object with at least a *property* and a *value* key/value pair.
+Since the `bba` method utilizes the account property feature, most of its data fields are embedded into the *value* key/value pair of a property. In Ardor, an account property is represented as a JSON object with at least a *property* and a *value* key/value pair. An example attestation can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e).
 
 
 ### DID Id
@@ -117,7 +115,7 @@ The following table shows the storage type characters used to represent the stor
 
 | Storage Type | Storage Type Character | Brief                                                               |
 |------------|:--------------------:|---------------------------------------------------------------------|
-| Ardor Cloud Storage     |           a          | DDOT is stored in Ardors Data Cloud                          |
+| Ardor Cloud Storage     |           c          | DDOT is stored in Ardors Data Cloud                          |
 
 
 ### DID Document Template Reference 
@@ -136,25 +134,23 @@ ardor-network = "m" / "t"
 ardor-tx-hash = 64HEXDIG
 ```
 
+`bba` DIDs can either point to Ardor`s testnet or mainnet. If no network is specified, the mainnet is assumed.
 
-#### mainnet:
+A `bba` DID includes the full hash of the first attestation transaction as a starting point and identifier. Due to the transaction hash as unique identifier, it can be assumed that `bba` DIDs are globally unique.
 
-`did:bba:f30e8cff75e5111da9943c123733d697120914bbef1b5010732ad409cbf29ee2`
+Example DIDs:
+
+**mainnet**
+
+`did:bba:fd8127c808552656bf3986a42884bd9ffc459fb5d71aec48e7535336a6191bf6`
 </br>
 or
 </br>
-`did:bba:m:f30e8cff75e5111da9943c123733d697120914bbef1b5010732ad409cbf29ee2`
+`did:bba:m:fd8127c808552656bf3986a42884bd9ffc459fb5d71aec48e7535336a6191bf6`
 
+**testnet**
 
-#### testnet:
-
-`did:bba:t:f30e8cff75e5111da9943c123733d697120914bbef1b5010732ad409cbf29ee2`
-
-
-https://tools.ietf.org/html/rfc5234
-
-http://cryptocoinjs.com/modules/misc/bs58/
-
+`did:bba:t:fd8127c808552656bf3986a42884bd9ffc459fb5d71aec48e7535336a6191bf6`
 
 
 
@@ -193,3 +189,6 @@ http://cryptocoinjs.com/modules/misc/bs58/
 ## Security Requirements
 
 not recommended to have multiple dids controlled by one account
+
+
+https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e
