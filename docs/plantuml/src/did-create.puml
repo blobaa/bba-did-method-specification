@@ -33,12 +33,12 @@ RES -> ATTE: self attest account
 note right
     accountProperty: {
         property: did://<did id>,
-        value: 001|a|0000-0000-0000-00000|c|<txh_s>
+        value: 001|a|0000-0000-0000-00000|a|<txh_s>
     }
 end note
 ATTE --> RES: return transaction hash -> txh_d
 |||
-RES --> USR: return DID (did:baa:<txh_d>)
+RES --> USR: return DID -> did:bba:<txh_d>
 
 
 @enduml

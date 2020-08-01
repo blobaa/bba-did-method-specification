@@ -20,7 +20,7 @@ RES -> ATTE: self-deactivate DID
 note right
     accountProperty: {
         property: did://<did id>,
-        value: 001|i|0000-0000-0000-00000|c|<txh_s>
+        value: 001|i|0000-0000-0000-00000|a|<txh_s>
     }
 end note
 

@@ -16,7 +16,7 @@ end box
 == DID Resolution ==
 
 
-USR -> RES: read DID (did:baa:<txh_d>)
+USR -> RES: read DID (did:bba:<txh_d>)
 |||
 
 
@@ -25,8 +25,9 @@ USR -> RES: read DID (did:baa:<txh_d>)
 loop
     alt is first iteration
         RES -> TXR: get initial attestation transaction (txh_d)
-        RES -> RES: save account name
+        RES -> RES: store account name
     else
+        RES -> RES: store account name
         RES -> NATTE: get initial attestation transaction
         RES -> RES: treat new account\nas current account
     end

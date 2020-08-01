@@ -15,7 +15,7 @@ end box
 
 == DID Payload Update ==
 
-USR -> RES: update DID\n(new DID Document Template)
+USR -> RES: update DID\nDocument Template
 |||
 RES -> TXR: get attestation property (see DID Resolution)
 RES -> STR: store new DID Document Template
@@ -24,29 +24,29 @@ RES -> ATTE: self-update attestation
 note right
     accountProperty: {
         property: did://<did id>,
-        value: 001|a|0000-0000-0000-00000|c|<ntxh_s>
+        value: 001|a|0000-0000-0000-00000|a|<ntxh_s>
     }
 end note
 |||
 
 
-== DID Account Update ==
+== DID Controller Update ==
 
-USR -> RES: update DID (new account)
+USR -> RES: update DID Controller
 |||
 RES -> TXR: get attestation property (see DID Resolution)
 RES -> ATTE: self-update attestation
 note right
     accountProperty: {
         pproperty: did://<did id>,
-        value: 001|d|1111-1111-1111-11111|c|<ntxh_s>
+        value: 001|d|1111-1111-1111-11111|a|<ntxh_s>
     }
 end note
 RES -> NATTE: self-attest new account
 note right
     accountProperty: {
         property: did://<did id>,
-        value: 001|a|0000-0000-0000-00000|c|<ntxh_s>
+        value: 001|a|0000-0000-0000-00000|a|<ntxh_s>
     }
 end note
 

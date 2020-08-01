@@ -1,5 +1,6 @@
 {
-    "plantuml.exportOutDir": "images/out",
+    "plantuml.diagramsRoot": "docs/plantuml/src",
+    "plantuml.exportOutDir": "docs/plantuml/out",
     "plantuml.exportSubFolder": false,
     "editor.autoIndent": "none",
     "editor.tabSize": 4,
