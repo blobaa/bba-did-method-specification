@@ -41,7 +41,6 @@ Current version: 1.0.0
             - [DID Controller Update](#did-controller-update)
         - [Deactivate](#deactivate)
         - [Resolve](#resolve)
-        - [Example](#example)
     - [Security Requirements](#security-requirements)
 
 </p>
@@ -160,7 +159,7 @@ or
 
 **testnet**
 
-`did:bba:t:fd8127c808552656bf3986a42884bd9ffc459fb5d71aec48e7535336a6191bf6`
+`did:bba:t:11764950b0e8e69694831a9860256178a957c1064ca7c5dd8c44a20d384fe00c`
 
 
 ## CRUD Operations
@@ -276,24 +275,37 @@ The DID Controller self-attest the deactivation by setting the state field of th
 
 ### Resolve
 
+The DID resolution process a `baa` DID resolver has to perform to resolve the DID Document mainly consists of three task as shown below.
+
 ![](../plantuml/out/did-resolve.svg)
 
 *DID resolution workflow*
 
+The first task is to retrieve the current DID attestation. It consists of the following 9 steps.
 
-### Example
+1. retrieve the tranaction identified by the transaction full hash `txh_d` as part of the DID string
+2. check if the returned transaction represents a self-set DID attestation
+3. continue with step 6.
+4. get the self-set delegation accept DID attestation that was involved in the DID Controller update process
+5. treat the new account as the current account
+6. check if the DID attestation state is active
+7. retrieve the self-set DID attestations that were set after the current DID attestation
+8. loop over the DID attestations found in step 7.
+    1. treat the found attestation as the current attestation
+    2. check if the DID attestation state is deprecated. If so, stop the loop.
+    3. check if the DID attestation state is inactive. If so, stop the whole resolution process.
+9.  check if the DID attestation state is active. If so, continue with the resolution process. Otherwise, continue with step 4.
 
-1. Create
-    1. Data Cloud
-        1. d50168874504b75afa2880f62ef20c9a2b9b9d8e1dc846c6802fb857462a8dd5
-    2. Account Prop
-        1. 0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e
-2. Update Payload
-    1. 
+
+The second task is to retrieve the DID Document Template. This is done by determining the storage mechanism indicated by the storage type field and retrieving the DDOT with the help of the DDOT reference string.
+
+
+The last task is to convert the DDOT into a DID Document by injecting the DID string information.
+
+
+After successfully performing these three task, a `bba` DID resolver is able to return a verified DID Document to the verifier.
+
 
 ## Security Requirements
 
 not recommended to have multiple dids controlled by one account
-
-
-https://testardor.jelurida.com/index.html?account=ARDOR-YQ26-W5RK-6ATW-G9HRT&chain=IGNIS&modal=transaction_info_modal&fullhash=3149f135e6121534878dbd7ef6a17cf274c0ac07e282607621a2078dec148b46
