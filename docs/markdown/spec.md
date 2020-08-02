@@ -4,7 +4,7 @@ This document specifies the `bba` DID method as part of the Blobaa project.
 
 It complies with the latest version (W3C Working Draft 31 July 2020) of the generic [DID specification](https://www.w3.org/TR/2020/WD-did-core-20200731/) as specified by the [W3C Credentials Community Group](https://www.w3.org/community/credentials/).
 
-A reference implementation handling `bba` CRUD functions is provided in form of the [bba-did-method-handler-ts](https://github.com/blobaa/bba-did-method-handler-ts) library.
+A reference implementation handling the `bba` CRUD functions is provided in form of the [bba-did-method-handler-ts](https://github.com/blobaa/bba-did-method-handler-ts) project.
 
 
 ## Version
@@ -30,9 +30,12 @@ Current version: 1.0.0
         - [Storage Type](#storage-type)
             - [Ardor Cloud Storage](#ardor-cloud-storage)
         - [DID Document Template Reference](#did-document-template-reference)
+        - [Misc](#misc)
     - [Method-specific DID syntax](#method-specific-did-syntax)
-    - [CRUD](#crud)
+    - [CRUD Operations](#crud-operations)
         - [Create](#create)
+            - [DID Document Template](#did-document-template)
+            - [DID](#did)
         - [Read](#read)
         - [Update](#update)
         - [Deactivate](#deactivate)
@@ -123,6 +126,11 @@ The following table shows the storage type characters used to represent the stor
 The DDOT reference field holds the DDOT reference used to retrieve the actual DDOT. It cryptographically binds the DDOT to the DID. It can consist of any character sequence not longer than 120 character. The interpretation of these characters is defined by the storage mechanism determined by the storage type field.
 
 
+### Misc
+
+It should be mentioned that not all 160 characters are being used. Only 149 characters are occupied: 3 (version) + 1 (state) + 20 (redirect account) + 1 (storage type) + 120 (payload) + 4 (delimiter). The missing 11 characters are reserved for future method extensions.
+
+
 ## Method-specific DID syntax
 
 The following ABNF defines the bba-specific DID scheme:
@@ -153,12 +161,70 @@ or
 `did:bba:t:fd8127c808552656bf3986a42884bd9ffc459fb5d71aec48e7535336a6191bf6`
 
 
+## CRUD Operations
 
-## CRUD
+The `bba` method  defines five operations to create, resolve, update (DDOT and DID Controller) and deactivate a DID.
+
 
 ### Create
 
+To create a DID, a DID Document Template is needed that holds the informations of the DID associated DID Document.
+
+
+#### DID Document Template
+
+ The difference between a resolved DID Document and the DID Document Template stored with a storage mechanism is the associated DID. The DDOT does not hold any DID informations about the associated DID. As an example a valid DID Document Template is shown below:
+````
+{
+    "@context": [
+        "https://www.w3.org/ns/did/v1",
+        "https://w3id.org/security/v1"
+    ],
+    "id": "",
+    "authentication": [
+        {
+            "id": "#z6MkjAySi1Ajf3cwZntbsmo53dmC8GX1Dm6PLmmBaC6SRuiy",
+            "type": "Ed25519VerificationKey2018",
+            "publicKeyBase58": "5iiQ7kvJKW8UTJ3uCCqECYDCJhF9osr2ekrFjv8RWgwb"
+        }
+    ]
+}
+````
+
+The resolution operation is later responsible to link this template to the associates DID by adding the missing DID information into the resolved DID Document. The DID Document created based on the DDOT above and the `bba:t:11764950b0e8e69694831a9860256178a957c1064ca7c5dd8c44a20d384fe00c` DID is shown below.
+````
+{
+    "@context": [
+        "https://www.w3.org/ns/did/v1",
+        "https://w3id.org/security/v1"
+    ],
+    "id": "did:bba:t:11764950b0e8e69694831a9860256178a957c1064ca7c5dd8c44a20d384fe00c",
+    "authentication": [
+        {
+            "id": "did:bba:t:11764950b0e8e69694831a9860256178a957c1064ca7c5dd8c44a20d384fe00c#z6MkjAySi1Ajf3cwZntbsmo53dmC8GX1Dm6PLmmBaC6SRuiy",
+            "type": "Ed25519VerificationKey2018",
+            "publicKeyBase58": "5iiQ7kvJKW8UTJ3uCCqECYDCJhF9osr2ekrFjv8RWgwb"
+        }
+    ]
+}
+````
+
+The mechanism to create a valid DID Document Template is out of the scope of this specification. A library assisting in the creation process is provided in form of the [did-document-ts](https://github.com/blobaa/did-document-ts) project.
+
+Separating the DDOT creation process from the DID creation process has the benefit of being independent to the evolution of the DID Data Model and lets the `bba` method being compatible with future Data Models and custom contexts.
+
+
+#### DID
+
+Creating and registering a `bba` DID involves multiple steps as shown in the following figure:
+
 ![](../plantuml/out/did-create.svg)
+
+*DID creation workflow*
+
+1. 
+
+
 
 
 ### Read
