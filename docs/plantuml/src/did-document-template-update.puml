@@ -1,0 +1,36 @@
+@startuml
+skinparam BoxPadding 15
+skinparam ParticipantPadding 15
+
+
+participant "DID Controller" as DCR
+box "Ardor Blockchain" #WhiteSmoke
+    participant "Account" as ATTE
+    participant "Cloud Storage" as STR
+end box
+
+
+== Precondition ==
+
+DCR -> DCR: create new\nDID Document Template
+|||
+
+
+== DID Document Template Storing\n(Ardor Cloud Storage) ==
+
+DCR -> STR: store new DID Document Template
+STR --> DCR: return transaction hash -> ntxh_s
+|||
+
+
+== DID Binding Update ==
+
+DCR -> ATTE: self-update attestation
+note right
+    accountProperty: {
+        property: did://<did id>,
+        value: 001|a|0000-0000-0000-00000|c|<ntxh_s>
+    }
+end note
+
+@enduml

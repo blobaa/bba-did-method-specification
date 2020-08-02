@@ -11,6 +11,7 @@ end box
 
 
 == Precondition ==
+
 DCR -> DCR: create Ardor account\nand sub keys
 note right
     Ardor account is master key.
@@ -19,12 +20,16 @@ end note
 |||
 DCR -> DCR: create DID Document Template
 
+
 == DID Document Template Storing\n(Ardor Cloud Storage) ==
+
 DCR -> STR: store DID Document Template
 STR --> DCR: return transaction hash -> txh_s
 |||
 
+
 == DID Registration ==
+
 DCR -> ATTE: self-attest account
 note right
     accountProperty: {

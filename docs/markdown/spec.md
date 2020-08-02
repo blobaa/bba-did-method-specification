@@ -36,9 +36,11 @@ Current version: 1.0.0
         - [Create](#create)
             - [DID Document Template](#did-document-template)
             - [DID](#did)
-        - [Read](#read)
         - [Update](#update)
+            - [DID Document Template Update](#did-document-template-update)
+            - [DID Controller Update](#did-controller-update)
         - [Deactivate](#deactivate)
+        - [Resolve](#resolve)
         - [Example](#example)
     - [Security Requirements](#security-requirements)
 
@@ -231,19 +233,52 @@ The next step is to register the DID. To do so, self-attest your account as the 
 The last step involved is to create the DID string. Use the attestation transaction full hash `txh_d` as the *ardor-tx-hash* element and construct your DID in form of `did:baa:<m or blank (without leading ':') for mainnet / t for testnet>:txh_d`. An example DID is `did:baa:t:0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e`.
 
 
-### Read
-
-![](../plantuml/out/did-read.svg)
-
-
 ### Update
 
-![](../plantuml/out/did-update.svg)
+There are two update operations defined. One for DID Document Template updates and one for DID controller updates.
+
+
+#### DID Document Template Update
+
+To change a DID Document, the corresponding DDOT needs to be updated. To do so, almost the same workflow described in the Create section is used and shown in the following figure. It is again assumed that a DID Controller created / is in possetion of the new DDOT that should replace the current one.
+
+![](../plantuml/out/did-document-template-update.svg)
+
+*DDOT update workflow*
+
+
+The DID Controller stores the new DDOT with one of the support storage mechanisms and self-updates the current attestation with the new DDOT reference. An example DDOT attestation update transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=26d3c955009090f971d862994beee8cc5afda82c5ed1fbd1849e09a14c1a001f).
+
+
+#### DID Controller Update
+
+To change the DID Controller, two self-attestations are needed as shown below.
+
+![](../plantuml/out/did-controller-update.svg)
+
+*DID Controller update workflow*
+
+First, the current DID Controller updates its attestation with the Ardor account of the new DID Controller. To do so, one replaces the redirect account with the 20 account characters of the new DID Controller account and sets the state character to `d`. An example transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=b33dabe2232218bdbf38112e830f51bf32334d1691894bbdcd6012d8ea5ad932).
+
+The second step is to *accept* the delegation of control by self-attesting the new account in form of an attestation property. This property must be equal to the pre updated attestation property of the current DID Controller account. An example transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-YQ26-W5RK-6ATW-G9HRT&chain=IGNIS&modal=transaction_info_modal&fullhash=bf8a1f655d615df8f254c757cc710585cf5507448b620bacaf72291a014a456b).
 
 
 ### Deactivate
 
-![](../plantuml/out/did-delete.svg)
+Only one attestation update is needed to permanently deactivate a DID, as shown in the following figure.
+
+![](../plantuml/out/did-deactivate.svg)
+
+*DID deactivation workflow*
+
+The DID Controller self-attest the deactivation by setting the state field of the attestation property to `i`. An example transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-YQ26-W5RK-6ATW-G9HRT&chain=IGNIS&modal=transaction_info_modal&fullhash=3149f135e6121534878dbd7ef6a17cf274c0ac07e282607621a2078dec148b46).
+
+
+### Resolve
+
+![](../plantuml/out/did-resolve.svg)
+
+*DID resolution workflow*
 
 
 ### Example
@@ -261,4 +296,4 @@ The last step involved is to create the DID string. Use the attestation transact
 not recommended to have multiple dids controlled by one account
 
 
-https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=d50168874504b75afa2880f62ef20c9a2b9b9d8e1dc846c6802fb857462a8dd5
+https://testardor.jelurida.com/index.html?account=ARDOR-YQ26-W5RK-6ATW-G9HRT&chain=IGNIS&modal=transaction_info_modal&fullhash=3149f135e6121534878dbd7ef6a17cf274c0ac07e282607621a2078dec148b46

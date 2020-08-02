@@ -1,0 +1,23 @@
+@startuml
+skinparam BoxPadding 15
+skinparam ParticipantPadding 15
+
+
+participant "DID Controller" as DCR
+box "Ardor Blockchain" #WhiteSmoke
+    participant "Account" as ATTE
+end box
+
+
+== DID Deactivation ==
+
+DCR -> ATTE: self-deactivate DID
+note right
+    accountProperty: {
+        property: did://<did id>,
+        value: 001|i|0000-0000-0000-00000|c|<txh_s>
+    }
+end note
+
+
+@enduml
