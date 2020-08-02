@@ -216,15 +216,19 @@ Separating the DDOT creation process from the DID creation process has the benef
 
 #### DID
 
-Creating and registering a `bba` DID involves multiple steps as shown in the following figure:
+Creating and registering a `bba` DID involves multiple steps as shown in the figure below:
 
 ![](../plantuml/out/did-create.svg)
 
 *DID creation workflow*
 
-1. 
+As a precondition it is assumed that you have an Ardor account created to act as the DID Controller and the sub keys generated that should occur in the DID Document. In addition to that it is also assumed that you already created the DID Document Template that should be linked to the DID.
 
+The first step in the creation process is to store the DDOT with a supported storage mechanism. The Ardor Cloud Storage type is used here. To store the DDOT, create a data cloud transaction as explained in the Ardor Cloud Storage section and save the transaction full hash `txh_s` to register the DID. An example storage transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=d50168874504b75afa2880f62ef20c9a2b9b9d8e1dc846c6802fb857462a8dd5).
 
+The next step is to register the DID. To do so, self-attest your account as the DID Controller by self-setting an account property (your account is the sender and receiver of the property) with a new generated DID Id and the storage transaction hash `txh_s` as the DDOT reference. An example self-attestation transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e).
+
+The last step involved is to create the DID string. Use the attestation transaction full hash `txh_d` as the *ardor-tx-hash* element and construct your DID in form of `did:baa:<m or blank for mainnet / t for testnet>:txh_d`. An example DID looks like `did:baa:t:0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e`.
 
 
 ### Read
@@ -257,4 +261,4 @@ Creating and registering a `bba` DID involves multiple steps as shown in the fol
 not recommended to have multiple dids controlled by one account
 
 
-https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e
+https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=d50168874504b75afa2880f62ef20c9a2b9b9d8e1dc846c6802fb857462a8dd5
