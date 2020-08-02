@@ -3,42 +3,38 @@ skinparam BoxPadding 15
 skinparam ParticipantPadding 15
 
 
-participant "DID Controller" as USR
-participant "DID Resolver" as RES
-box "ARDOR Blockchain" #WhiteSmoke
+participant "DID Controller" as DCR
+box "Ardor Blockchain" #WhiteSmoke
     participant "Account" as ATTE
     participant "Cloud Storage" as STR
 end box
 
 
-== DID Creation ==
+== Precondition ==
+DCR -> DCR: create Ardor account\nand sub keys
+note right
+    Ardor account is master key.
+    Sub keys are used in DID Document
+end note
+|||
+DCR -> DCR: create DID Document Template
 
-group optional
-    USR -> USR: create ARDOR account\nand sub keys
-    note right
-        ARDOR account is master key.
-        Sub keys are used in DID Document
-    end note
-end
-group optional
-    USR -> USR: create DID Document Template
-end
+== DID Document Template Storing\n(Ardor Cloud Storage) ==
+DCR -> STR: store DID Document Template
+STR --> DCR: return transaction hash -> txh_s
 |||
-USR -> RES: create DID
-|||
-RES -> STR: store DID Document Template
-STR --> RES: return transaction hash -> txh_s
-|||
-RES -> ATTE: self attest account
+
+== DID Registration ==
+DCR -> ATTE: self-attest account
 note right
     accountProperty: {
         property: did://<did id>,
         value: 001|a|0000-0000-0000-00000|a|<txh_s>
     }
 end note
-ATTE --> RES: return transaction hash -> txh_d
+ATTE --> DCR: return transaction hash -> txh_d
 |||
-RES --> USR: return DID -> did:bba:<txh_d>
+DCR -> DCR: create DID -> did:bba:<txh_d>
 
 
 @enduml
