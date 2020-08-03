@@ -12,12 +12,11 @@ end box
 
 == Precondition ==
 
-DCR -> DCR: create Ardor account\nand sub keys
+DCR -> DCR: create Ardor account
 note right
     Ardor account is master key.
     Sub keys are used in DID Document
 end note
-|||
 DCR -> DCR: create DID Document Template
 
 
@@ -30,7 +29,7 @@ STR --> DCR: return transaction hash -> txh_s
 
 == DID Registration ==
 
-DCR -> ATTE: self-attest account
+DCR -> ATTE: create DID attestation
 note right
     accountProperty: {
         property: did://<did id>,

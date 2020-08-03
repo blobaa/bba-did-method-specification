@@ -9,9 +9,7 @@ box "Ardor Blockchain" #WhiteSmoke
 end box
 
 
-== DID Deactivation ==
-
-DCR -> ATTE: self-deactivate DID
+DCR -> ATTE: update DID attestation
 note right
     accountProperty: {
         property: did://<did id>,

@@ -3,7 +3,7 @@ skinparam BoxPadding 15
 skinparam ParticipantPadding 15
 
 
-participant "Verifier" as VER
+participant "Requester" as REQ
 participant "DID Resolver" as RES
 box "ARDOR Blockchain" #WhiteSmoke
     participant "Account" as ATTE
@@ -14,7 +14,7 @@ end box
 
 
 
-VER -> RES: read DID (did:bba:<txh_d>)
+REQ -> RES: request DID resolution\n(did:bba:<txh_d>)
 |||
 
 
@@ -23,25 +23,25 @@ VER -> RES: read DID (did:bba:<txh_d>)
 loop
     alt is first iteration
         RES -> TXR: get transaction (txh_d)
-        RES -> RES: check if transaction is\nself-set DID attestation
+        RES -> RES: check if transaction is\n DID attestation
     else
         ' RES -> RES: store account name
-        RES -> NATTE: get initial self-set DID attestation
+        RES -> NATTE: get initial DID attestation
         RES -> RES: treat new account\nas current account
     end
 
-    RES -> RES: check if attestation is active
-    RES -> ATTE: get self-set\nDID attestations
+    RES -> RES: check if DID attestation is active
+    RES -> ATTE: get newer \nDID attestations
 
-    loop over found attestations
-        RES -> RES: treat found attestation\nas current attestation
-        alt is attestation deprecated
+    loop over found DID attestations
+        RES -> RES: treat found DID attestation\nas current DID attestation
+        alt is DID attestation deprecated
             RES -> RES: break loop
-        else is attestation deactivated
+        else is DID attestation deactivated
             RES -> RES: stop DID resolution
         end
     end
-    alt is attestation active
+    alt is DID attestation active
         RES -> RES: break loop
     end
 end
@@ -51,15 +51,15 @@ end
 == DID Document Template Retrieval\n(Ardor Cloud Storage) ==
 
 RES -> RES: extract cloud storage tx hash (txh_s)
-RES -> STR: get did document template (txh_s)
-RES -> RES: check if did document template is self-set\n(by one of the found DID Controllers)
+RES -> STR: get DID Document Template (txh_s)
+RES -> RES: check if DID Document Template is self-set\n(by one of the found DID controllers)
 |||
 
 
 == DID Document Preparation ==
 
 RES -> RES: add DID informations to the\nDID Document Template
-RES -> VER: return DID Document
+RES -> REQ: return DID Document
 
 
 @enduml

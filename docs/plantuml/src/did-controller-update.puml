@@ -19,14 +19,14 @@ NDCR -> NDCR: create Ardor account
 
 == DID Controller Update ==
 
-DCR -> ATTE: self-update attestation
+DCR -> ATTE: update DID attestation
 note right
     accountProperty: {
         pproperty: did://<did id>,
         value: 001|d|1111-1111-1111-11111|c|<txh_s>
     }
 end note
-NDCR -> NATTE: self-attest new account
+NDCR -> NATTE: create DID attestation
 note right
     accountProperty: {
         property: did://<did id>,

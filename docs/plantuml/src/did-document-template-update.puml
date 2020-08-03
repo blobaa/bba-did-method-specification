@@ -25,7 +25,7 @@ STR --> DCR: return transaction hash -> ntxh_s
 
 == DID Binding Update ==
 
-DCR -> ATTE: self-update attestation
+DCR -> ATTE: update DID attestation
 note right
     accountProperty: {
         property: did://<did id>,

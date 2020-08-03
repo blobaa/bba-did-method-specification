@@ -1,6 +1,6 @@
 # BBA DID Method Specification
 
-This document specifies the `bba` DID method as part of the Blobaa project.
+This document specifies the `bba` DID method as part of the [Blobaa](https://github.com/blobaa) project.
 
 It complies with the latest version (W3C Working Draft 31 July 2020) of the generic [DID specification](https://www.w3.org/TR/2020/WD-did-core-20200731/) as specified by the [W3C Credentials Community Group](https://www.w3.org/community/credentials/).
 
@@ -12,6 +12,11 @@ A reference implementation handling the `bba` CRUD functions is provided in form
 Current version: 1.0.0
 
 
+## Status
+
+This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite this document as other than a work in progress.
+
+
 ## Table of Contents
 
 <details><summary><i>click to expand</i></summary>
@@ -19,9 +24,10 @@ Current version: 1.0.0
 
 - [BBA DID Method Specification](#bba-did-method-specification)
     - [Version](#version)
+    - [Status](#status)
     - [Table of Contents](#table-of-contents)
     - [Introduction](#introduction)
-    - [Method Data Fields](#method-data-fields)
+    - [DID Attestation Data Fields](#did-attestation-data-fields)
         - [DID Id](#did-id)
         - [Data Field Concatenation](#data-field-concatenation)
         - [Version](#version-1)
@@ -40,7 +46,7 @@ Current version: 1.0.0
             - [DID Document Template Update](#did-document-template-update)
             - [DID Controller Update](#did-controller-update)
         - [Deactivate](#deactivate)
-        - [Resolve](#resolve)
+        - [Read (Resolve)](#read-resolve)
     - [Security Requirements](#security-requirements)
 
 </p>
@@ -49,30 +55,30 @@ Current version: 1.0.0
 
 ## Introduction
 
-The `bba` DID method aims to enable the [Ardor](https://ardorplatform.org) blockchain to act as a [DPKI](https://www.weboftrust.info/downloads/dpki.pdf) within the [SSI](https://www.manning.com/books/self-sovereign-identity) ecosystem. It runs on the independent [IGNIS](https://www.jelurida.com/ignis) child chain and utilizes Ardors [Account Properties](https://ardordocs.jelurida.com/Account_Properties) feature to manage DIDs and corresponding DID controllers. A DID controller is always represented in form of an Ardor account and by default separated from the public keys (if present) shown in a resolved DID Document. Think of a master key controlling the DID operations create, update, deactivate. A DID controller always corresponds to exactly one Ardor account, where an Ardor account can control multiple DIDs.
+The `bba` DID method aims to enable the [Ardor](https://ardorplatform.org) blockchain to act as a [DPKI](https://www.weboftrust.info/downloads/dpki.pdf) within the [SSI](https://www.manning.com/books/self-sovereign-identity) ecosystem. It runs on the independent [IGNIS](https://www.jelurida.com/ignis) child chain and utilizes Ardors [Account Properties](https://ardordocs.jelurida.com/Account_Properties) feature to manage DIDs and corresponding DID controllers. A DID controller is always represented in form of an Ardor account and by default separated from the public keys (if present) shown in a resolved DID Document. Think of a master key controlling the DID operations create, update and deactivate. A DID controller always corresponds to exactly one Ardor account, where an Ardor account can control multiple DIDs.
 
-DID and DID Document handlings are decoupled so that multiple DID Document storages can be defined and integrated to store DID Document Templates (DID Documents without a DID reference). At the current state the `bba` method defines one storage type (the Ardor internal [Data Cloud](https://ardordocs.jelurida.com/Data_Cloud)).
+DID and DID Document handling is decoupled so that multiple DID Document storages can be defined and integrated to store DID Document Templates (DID Documents without a DID reference). At the current state the `bba` method defines one storage type (Ardor Cloud Storage).
 
-In the following, creating and updating account properties is called attestation since doing so requires a blockchain transaction and states that the issuing account intentionally attests properties to the receiver account (which can also be the same account).
+In the following, `bba` method compliant account properties are called DID attestations. An account property is `bba` method compliant when it aligns to the data model described in the DID Attestation Data Fields section and is self-set. A self-set account property is a property where the sender and the receiver is the same account.
 
 
-## Method Data Fields
+## DID Attestation Data Fields
 
 Since the `bba` method utilizes the account property feature, most of its data fields are embedded into the *value* key/value pair of a property. In Ardor, an account property is represented as a JSON object with at least a *property* and a *value* key/value pair. An example attestation can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e).
 
 
 ### DID Id
 
-The only data field not embedded into the *value* key/value pair and used to determine a specific DID is the **DID Id**. It represents the value of the *property* key/value pair and is used to provide the option to control multiple DIDs with one account. To indicate that a property is part of the `bba` DID method, the property value starts with the identifier *did://* and is followed by a unique 20 character long alphanumeric case sensitive DID Id. For example `did://EZVDomDNygTr79QXKnzE`
+The only data field not embedded into the *value* key/value pair and used to determine a specific DID is the **DID Id**. It represents the value of the *property* key/value pair and is used to provide the capability to control multiple DIDs with one account. To indicate that a property is a DID attestation, the property value starts with the identifier *did://* and is followed by a unique 20 character long alphanumeric case sensitive DID Id. For example `did://EZVDomDNygTr79QXKnzE`
 
 
 ### Data Field Concatenation
 
-All other fields are embedded into the 160 characters long *value* key/value pair. They consist of one or more characters concatenated into a defined order and separated by a pipe character \|.
+All other fields are embedded into the 160 characters long *value* key/value pair. They consist of one or more characters concatenated into a defined order and separated by a pipe delimiter \| as shown below.
 
 ![](../draw.io/out/diagrams-bba-method-character-arrangement.svg)
 
-*character arrangement of bba DID method data fields*
+*character arrangement of DID attestation data fields*
 
 
 ### Version
@@ -88,21 +94,21 @@ An **active** state indicates that a DID is active and can be resolved.
 
 An **inactive** state states that a DID was active in the past and is now inactive. It can no longer be resolved and is not reactivatable.
 
-A **deprecated** state states that the DID controller is deprecated and the DID is now controlled by another controller. The new DID controller account is referenced in the redirect account data field of the corresponding attestation.
+A **deprecated** state states that the DID controller is deprecated and the DID is now controlled by another controller. The new DID controller account is referenced in the redirect account data field.
 
 
 The following table shows the state characters used to represent the attestation state:
 
 | State | State Character | Brief                                                               |
 |------------|:--------------------:|---------------------------------------------------------------------|
-| active     |           a          | DID is active and resolvable chain                          |
+| active     |           a          | DID is active and resolvable                           |
 | inactive   |           i          | DID is inactive and cannot be resolved and reactivated                       |
 | deprecated |           d          | DID controller is deprecated and new controller is referenced via the redirect account field |
 
 
 ### Redirect Account
 
-As explained in the state type section, the **Redirect Account** data field is only used in case of a deprecated state. It points to the controller account that took over the control of a specific DID. To save character space, not the complete [Reed-Solomon](https://ardordocs.jelurida.com/RS_Address_Format) account representation is included in this data field. Only the significant 20 characters excluding the *ARDOR-* prefix are present. To use the redirecting account, one needs to reconstruct the Reed Solomon representation later on. In case the data field is not used, it has the dummy value of *0000-0000-0000-00000*.
+The **Redirect Account** data field is only used in case of a deprecated state. It points to the controller account that took over the control of the DID. To save character space, not the complete [Reed-Solomon](https://ardordocs.jelurida.com/RS_Address_Format) account representation is included in this data field. Only the significant 20 characters excluding the *ARDOR-* prefix are present. To use the redirecting account, one needs to reconstruct the Reed Solomon representation later on. In case the data field is not used, it has the dummy value of *0000-0000-0000-00000*.
 
 
 ### Storage Type
@@ -112,7 +118,7 @@ The storage type character indicates the storage mechanism used to store and ret
 
 #### Ardor Cloud Storage
 
-At the current state there is only the Ardor cloud storage mechanism defined. It uses the Data Cloud feature to store a stringified DDOT JSON in plain text within a transaction. To be recognized as `bba` method compliant cloud data, the cloud data name field must be set to `bba-did-document-template`. The transaction full hash value is then used as the DDOT reference and can later be used to retrieve the data cloud transaction and therefore the embedded DDOT object.
+At the current state there is only the Ardor Cloud Storage mechanism defined. It uses Ardors [Data Cloud](https://ardordocs.jelurida.com/Data_Cloud) feature to store a stringified DDOT JSON in plain text within a transaction. To be recognized as a `bba` method compliant cloud data, the cloud data name field must be set to `bba-did-document-template`. The transaction full hash value is then used as the DDOT reference and can later be used to retrieve the data cloud transaction and therefore the embedded DDOT object.
 
 
 The following table shows the storage type characters used to represent the storage types:
@@ -124,7 +130,7 @@ The following table shows the storage type characters used to represent the stor
 
 ### DID Document Template Reference 
 
-The DDOT reference field holds the DDOT reference used to retrieve the actual DDOT. It cryptographically binds the DDOT to the DID. It can consist of any character sequence not longer than 120 character. The interpretation of these characters is defined by the storage mechanism determined by the storage type field.
+The DDOT reference field holds the DDOT reference used to retrieve the DID related DDOT. It cryptographically binds the DDOT to the DID. It can consist of any character sequence not longer than 120 character. The interpretation of these characters is defined by the storage mechanism.
 
 
 ### Misc
@@ -164,7 +170,7 @@ or
 
 ## CRUD Operations
 
-The `bba` method  defines five operations to create, resolve, update (DDOT and DID Controller) and deactivate a DID.
+The `bba` method  defines five operations to create, read, update (DDOT and DID controller) and deactivate a DID.
 
 
 ### Create
@@ -174,7 +180,7 @@ To create a DID, a DID Document Template is needed that holds the informations o
 
 #### DID Document Template
 
- The difference between a resolved DID Document and the DID Document Template stored with a storage mechanism is the associated DID. The DDOT does not hold any DID informations about the associated DID. As an example a valid DID Document Template is shown below:
+ The difference between a resolved DID Document and the DID Document Template stored with a storage mechanism is the associated DID. The DDOT does not hold any DID informations about the associated DID. As an example, a valid DID Document Template is shown below:
 ````
 {
     "@context": [
@@ -212,7 +218,7 @@ The resolution operation is later responsible to link this template to the assoc
 
 The mechanism to create a valid DID Document Template is out of the scope of this specification. A library assisting in the creation process is provided in form of the [did-document-ts](https://github.com/blobaa/did-document-ts) project.
 
-Separating the DDOT creation process from the DID creation process has the benefit of being independent to the evolution of the DID Data Model and lets the `bba` method being compatible with future Data Models and custom contexts.
+Separating the DDOT creation process from the DID creation process has the benefit of being independent to the evolution of the DID data model and lets the `bba` method being compatible with future data models and custom contexts. A DDOT creator has to ensure that the related DID Document conforms to the DID specification.
 
 
 #### DID
@@ -223,13 +229,13 @@ Creating and registering a `bba` DID involves multiple steps as shown in the fig
 
 *DID creation workflow*
 
-As a precondition it is assumed that you have an Ardor account created to act as the DID Controller and the sub keys generated that should occur in the DID Document. In addition to that it is also assumed that you already created the DID Document Template that should be linked to the DID.
+As a precondition it is assumed that the DID controller has an Ardor account created and access to the DDOT one wants to link to the DID.
 
-The first step in the creation process is to store the DDOT with a supported storage mechanism. The Ardor Cloud Storage type is used here. To store the DDOT, create a data cloud transaction as explained in the Ardor Cloud Storage section and save the transaction full hash `txh_s` to link the DDOT to the DID. An example storage transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=d50168874504b75afa2880f62ef20c9a2b9b9d8e1dc846c6802fb857462a8dd5).
+The first step in the creation process is to store the DDOT with a supported storage mechanism. The Ardor Cloud Storage mechanism is used here. To store the DDOT, the DID controller must create a data cloud transaction as explained in the Ardor Cloud Storage section and save the transaction full hash `txh_s` to link the DDOT to the DID. An example transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=d50168874504b75afa2880f62ef20c9a2b9b9d8e1dc846c6802fb857462a8dd5).
 
-The next step is to register the DID. To do so, self-attest your account as the DID Controller by self-setting an account property (your account is the sender and receiver of the property) with a new generated DID Id and the storage transaction hash `txh_s` as the DDOT reference. An example self-attestation transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e).
+The next step is to register the DID. To do so, the DID controller creates a DID attestation to the Ardor account one has control of with a new generated DID Id and the storage transaction hash `txh_s` as the DDOT reference. An example transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e).
 
-The last step involved is to create the DID string. Use the attestation transaction full hash `txh_d` as the *ardor-tx-hash* element and construct your DID in form of `did:baa:<m or blank (without leading ':') for mainnet / t for testnet>:txh_d`. An example DID is `did:baa:t:0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e`.
+The last step involved is to create the DID string. The DID string can now be constructed by concatenating the `bba` DID prefix with the network character the DID was registered at and the attestation transaction full hash `txh_d` in the following way: `did:baa:<m or blank (without leading ':') for mainnet / t for testnet>:txh_d`. An example DID is `did:baa:t:0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e`.
 
 
 ### Update
@@ -239,57 +245,57 @@ There are two update operations defined. One for DID Document Template updates a
 
 #### DID Document Template Update
 
-To change a DID Document, the corresponding DDOT needs to be updated. To do so, almost the same workflow described in the Create section is used and shown in the following figure. It is again assumed that a DID Controller created / is in possetion of the new DDOT that should replace the current one.
+To change a DID Document, the corresponding DDOT needs to be updated. To do so, almost the same workflow is used as described in the Creating section and shown in the figure below. It is again assumed that a DID controller created / is in possetion of the new DDOT that should replace the current one.
 
 ![](../plantuml/out/did-document-template-update.svg)
 
 *DDOT update workflow*
 
 
-The DID Controller stores the new DDOT with one of the support storage mechanisms and self-updates the current attestation with the new DDOT reference. An example DDOT attestation update transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=26d3c955009090f971d862994beee8cc5afda82c5ed1fbd1849e09a14c1a001f).
+The DID controller stores the new DDOT with one of the support storage mechanisms and updates the current attestation with the new DDOT reference. An example transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=26d3c955009090f971d862994beee8cc5afda82c5ed1fbd1849e09a14c1a001f).
 
 
 #### DID Controller Update
 
-To change the DID Controller, two self-attestations are needed as shown below.
+To change the DID controller, two attestations are required, as shown below.
 
 ![](../plantuml/out/did-controller-update.svg)
 
-*DID Controller update workflow*
+*DID controller update workflow*
 
-First, the current DID Controller updates its attestation with the Ardor account of the new DID Controller. To do so, one replaces the redirect account with the 20 account characters of the new DID Controller account and sets the state character to `d`. An example transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=b33dabe2232218bdbf38112e830f51bf32334d1691894bbdcd6012d8ea5ad932).
+First, the current DID controller updates its attestation with the Ardor account of the new DID controller. To do so, one replaces the redirect account with the 20 account characters of the new DID controller account and sets the state character to `d`. An example transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=b33dabe2232218bdbf38112e830f51bf32334d1691894bbdcd6012d8ea5ad932).
 
-The second step is to *accept* the delegation of control by self-attesting the new account in form of an attestation property. This property must be equal to the pre updated attestation property of the current DID Controller account. An example transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-YQ26-W5RK-6ATW-G9HRT&chain=IGNIS&modal=transaction_info_modal&fullhash=bf8a1f655d615df8f254c757cc710585cf5507448b620bacaf72291a014a456b).
+The second step is to *accept* the delegation of control by creating a DID attestion with the new controller account. This attestation must be equal to the pre updated DID attestation of the current DID controller account. An example transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-YQ26-W5RK-6ATW-G9HRT&chain=IGNIS&modal=transaction_info_modal&fullhash=bf8a1f655d615df8f254c757cc710585cf5507448b620bacaf72291a014a456b).
 
 
 ### Deactivate
 
-Only one attestation update is needed to permanently deactivate a DID, as shown in the following figure.
+Deactivating a DID requires only one attestation update and is shown in the figure below.
 
 ![](../plantuml/out/did-deactivate.svg)
 
 *DID deactivation workflow*
 
-The DID Controller self-attest the deactivation by setting the state field of the attestation property to `i`. An example transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-YQ26-W5RK-6ATW-G9HRT&chain=IGNIS&modal=transaction_info_modal&fullhash=3149f135e6121534878dbd7ef6a17cf274c0ac07e282607621a2078dec148b46).
+The DID controller only needs to set the state field of the DID attestation to `i` which sets the DID to inactive. An inactive DID cannot be reactivated and is locked in this state. An example transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-YQ26-W5RK-6ATW-G9HRT&chain=IGNIS&modal=transaction_info_modal&fullhash=3149f135e6121534878dbd7ef6a17cf274c0ac07e282607621a2078dec148b46).
 
 
-### Resolve
+### Read (Resolve)
 
-The DID resolution process a `baa` DID resolver has to perform to resolve the DID Document mainly consists of three task as shown below.
+The DID resolution process to resolve a `baa` DID mainly consists of three task as shown below.
 
 ![](../plantuml/out/did-resolve.svg)
 
 *DID resolution workflow*
 
-The first task is to retrieve the current DID attestation. It consists of the following 9 steps.
+The first task is to **retrieve the current DID attestation**. It consists of the following 9 steps.
 
 1. retrieve the tranaction identified by the transaction full hash `txh_d` as part of the DID string
-2. check if the returned transaction represents a self-set DID attestation
+2. check if the returned transaction represents a DID attestation
 3. continue with step 6.
-4. get the self-set delegation accept DID attestation that was involved in the DID Controller update process
+4. get the *delegation accepted* DID attestation that was created in the DID controller update process
 5. treat the new account as the current account
 6. check if the DID attestation state is active
-7. retrieve the self-set DID attestations that were set after the current DID attestation
+7. retrieve the DID attestations that were set after the current DID attestation
 8. loop over the DID attestations found in step 7.
     1. treat the found attestation as the current attestation
     2. check if the DID attestation state is deprecated. If so, stop the loop.
@@ -297,15 +303,17 @@ The first task is to retrieve the current DID attestation. It consists of the fo
 9.  check if the DID attestation state is active. If so, continue with the resolution process. Otherwise, continue with step 4.
 
 
-The second task is to retrieve the DID Document Template. This is done by determining the storage mechanism indicated by the storage type field and retrieving the DDOT with the help of the DDOT reference string.
+The second task is to **retrieve the DID Document Template**. This is done by determining the storage mechanism indicated by the storage type field and retrieving the DDOT with the help of the DDOT reference string.
 
 
-The last task is to convert the DDOT into a DID Document by injecting the DID string information.
+The last task is to **convert the DDOT into a DID Document** by injecting the DID string information.
 
 
-After successfully performing these three task, a `bba` DID resolver is able to return a verified DID Document to the verifier.
+After successfully performing these three task, a `bba` DID resolver is able to return a verified DID Document to the requester.
 
 
 ## Security Requirements
 
 not recommended to have multiple dids controlled by one account
+
+DID id collusion
