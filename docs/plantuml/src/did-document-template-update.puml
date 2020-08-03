@@ -23,7 +23,7 @@ STR --> DCR: return transaction hash -> ntxh_s
 |||
 
 
-== DID Binding Update ==
+== DDOT Binding Update ==
 
 DCR -> ATTE: update DID attestation
 note right

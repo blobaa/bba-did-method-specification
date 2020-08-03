@@ -18,7 +18,7 @@ REQ -> RES: request DID resolution\n(did:bba:<txh_d>)
 |||
 
 
-== DID Attestation Parsing ==
+== DID Attestation Retrieval ==
 
 loop
     alt is first iteration

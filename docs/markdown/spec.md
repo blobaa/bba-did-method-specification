@@ -2,9 +2,9 @@
 
 This document specifies the `bba` DID method as part of the [Blobaa](https://github.com/blobaa) project.
 
-It complies with the latest version (W3C Working Draft 31 July 2020) of the generic [DID specification](https://www.w3.org/TR/2020/WD-did-core-20200731/) as specified by the [W3C Credentials Community Group](https://www.w3.org/community/credentials/).
+It conform to the latest version (W3C Working Draft 31 July 2020) of the [DID specification](https://www.w3.org/TR/2020/WD-did-core-20200731/) as specified by the [W3C Credentials Community Group](https://www.w3.org/community/credentials/) and has been added to W3Cs [DID method registry](https://w3c.github.io/did-spec-registries/#did-methods).
 
-A reference implementation handling the `bba` CRUD functions is provided in form of the [bba-did-method-handler-ts](https://github.com/blobaa/bba-did-method-handler-ts) project.
+A reference implementation handling the `bba` CRUD operations is provided in form of the [bba-did-method-handler-ts](https://github.com/blobaa/bba-did-method-handler-ts) project.
 
 
 ## Version
@@ -48,6 +48,9 @@ This is a draft document and may be updated, replaced or obsoleted by other docu
         - [Deactivate](#deactivate)
         - [Read (Resolve)](#read-resolve)
     - [Security Requirements](#security-requirements)
+        - [Key Management](#key-management)
+        - [Authorization](#authorization)
+        - [REST Endpoint](#rest-endpoint)
 
 </p>
 </details>
@@ -313,6 +316,29 @@ After successfully performing these three task, a `bba` DID resolver is able to 
 
 
 ## Security Requirements
+
+### Key Management
+
+A DID controller is always represented as an Ardor account and uses the Ardor native key materials as master key (which utilizes the Curve25519 elliptic curve). When creating an Ardor account, a mnemonic passphrase is created from which the private key is derived. Losing this private key or exposing it to other parties means losing or giving away control over the DID and thus the DID document. There are Ardor native mechanism to help in containing control in case of a key compromise like [Phasing Transactions](https://ardordocs.jelurida.com/Phasing_Transactions) or to restore a key in form of [Shamir's Secret Sharing](https://ardordocs.jelurida.com/Secret_Sharing).
+
+Losing or compromising a sub keys private key is less of a concern. As long as the DID controller is in possetion of the master key, one can simply generate a new key and update the DDOT.
+
+
+### Authorization
+
+Because the `bba` DID method is composed of transactions issued in a specific order and with specific content, it cannot prevent a DID controller to act maliciously and create wrong statements about a DID. However, the validity and authority of performed DID operations is verified in the resolution process.
+
+It should be mentioned that no authenticity check of sub keys is performed in the DID Registration and DDOT Binding process. This needs to be done either by a storage mechanism at DDOT storing time or dynamically by a DID consumer. The later option is preferred as it makes sure that a DID controller is in possesion of the private key at the time of interaction.
+
+
+### REST Endpoint
+
+DIDs can be queried off-chain using the evan.network DID resolver smart agent. This smart agent communicates via HTTPS and thus ensures transport layer security.
+
+
+Eavesdropping: 
+Since a DID and the corresponding DID Document is supposed to be accessible by any third party without restriction
+eavesdropping, replay, message insertion, deletion, modification, and man-in-the-middle. Potential denial of service attacks MUST be identified as well.
 
 not recommended to have multiple dids controlled by one account
 
