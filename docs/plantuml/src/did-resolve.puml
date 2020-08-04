@@ -32,9 +32,10 @@ loop
 
     RES -> RES: check if DID attestation is active
     RES -> ATTE: get newer \nDID attestations
+    RES -> RES: sort DID attestations\nfrom oldest to newest
 
-    loop over found DID attestations
-        RES -> RES: treat found DID attestation\nas current DID attestation
+    loop over DID attestations
+        RES -> RES: treat DID attestation\nas current DID attestation
         alt is DID attestation deprecated
             RES -> RES: break loop
         else is DID attestation deactivated

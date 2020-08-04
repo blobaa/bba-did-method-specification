@@ -50,7 +50,10 @@ This is a draft document and may be updated, replaced or obsoleted by other docu
     - [Security Requirements](#security-requirements)
         - [Key Management](#key-management)
         - [Authorization](#authorization)
-        - [REST Endpoint](#rest-endpoint)
+        - [Usage](#usage)
+        - [DID ID Collusion](#did-id-collusion)
+        - [Resolution Speed](#resolution-speed)
+    - [Privacy Requirements](#privacy-requirements)
 
 </p>
 </details>
@@ -299,11 +302,12 @@ The first task is to **retrieve the current DID attestation**. It consists of th
 5. treat the new account as the current account
 6. check if the DID attestation state is active
 7. retrieve the DID attestations that were set after the current DID attestation
-8. loop over the DID attestations found in step 7.
+8. sort the found DID attestations from the oldest ( the one that is closest to the current attestation) to the newest
+9. loop over the DID attestations found in step 7.
     1. treat the found attestation as the current attestation
     2. check if the DID attestation state is deprecated. If so, stop the loop.
     3. check if the DID attestation state is inactive. If so, stop the whole resolution process.
-9.  check if the DID attestation state is active. If so, continue with the resolution process. Otherwise, continue with step 4.
+10. check if the DID attestation state is active. If so, continue with the resolution process. Otherwise, continue with step 4.
 
 
 The second task is to **retrieve the DID Document Template**. This is done by determining the storage mechanism indicated by the storage type field and retrieving the DDOT with the help of the DDOT reference string.
@@ -319,27 +323,41 @@ After successfully performing these three task, a `bba` DID resolver is able to 
 
 ### Key Management
 
-A DID controller is always represented as an Ardor account and uses the Ardor native key materials as master key (which utilizes the Curve25519 elliptic curve). When creating an Ardor account, a mnemonic passphrase is created from which the private key is derived. Losing this private key or exposing it to other parties means losing or giving away control over the DID and thus the DID document. There are Ardor native mechanism to help in containing control in case of a key compromise like [Phasing Transactions](https://ardordocs.jelurida.com/Phasing_Transactions) or to restore a key in form of [Shamir's Secret Sharing](https://ardordocs.jelurida.com/Secret_Sharing).
+A DID controller is always represented as an Ardor account and uses the Ardor native keys as master key (which utilizes the Curve25519 elliptic curve). When creating an Ardor account, a mnemonic passphrase is created from which the private key is derived. Losing this private key or exposing it to other parties means losing or giving away control over the DID and thus the DID document. There are Ardor native mechanism to help in containing control in case of a key compromise like [Phasing Transactions](https://ardordocs.jelurida.com/Phasing_Transactions) or to restore a key in form of [Shamir's Secret Sharing](https://ardordocs.jelurida.com/Secret_Sharing) or [HD Wallets](https://ardordocs.jelurida.com/From_Simple_Wallet_to_HD_Wallet/en).
 
 Losing or compromising a sub keys private key is less of a concern. As long as the DID controller is in possetion of the master key, one can simply generate a new key and update the DDOT.
 
 
 ### Authorization
 
-Because the `bba` DID method is composed of transactions issued in a specific order and with specific content, it cannot prevent a DID controller to act maliciously and create wrong statements about a DID. However, the validity and authority of performed DID operations is verified in the resolution process.
+Because the `bba` DID method is composed of transactions issued in a specific order and with specific content, it cannot prevent a DID controller to act maliciously and create wrong statements about a DID. However, the validity and authority of performed DID operations is proven in the resolution process.
 
-It should be mentioned that no authenticity check of sub keys is performed in the DID Registration and DDOT Binding process. This needs to be done either by a storage mechanism at DDOT storing time or dynamically by a DID consumer. The later option is preferred as it makes sure that a DID controller is in possesion of the private key at the time of interaction.
-
-
-### REST Endpoint
-
-DIDs can be queried off-chain using the evan.network DID resolver smart agent. This smart agent communicates via HTTPS and thus ensures transport layer security.
+It should be mentioned that no authenticity check of sub keys is performed in the DID Registration and DDOT Binding process. This needs to be done either by a storage mechanism at DDOT storing time or dynamically by a DID consumer. The later option is preferred as it ensures that a DID controller is in possesion of the private key at the time of interaction.
 
 
-Eavesdropping: 
-Since a DID and the corresponding DID Document is supposed to be accessible by any third party without restriction
-eavesdropping, replay, message insertion, deletion, modification, and man-in-the-middle. Potential denial of service attacks MUST be identified as well.
+### Usage
 
-not recommended to have multiple dids controlled by one account
+Even though not recommended and error prone, a DID controller or resolver (actor) could use the official [Ardor web wallet](https://ardor.jelurida.com/index.html) to process the `bba` CRUD operations. This can be done by running an own node or using an already existing one an actor trusts. The later comes with a trade off in security vs usability. It lowers security due to an additional intermediate (the node runner) between the actor and the blockchain but adds usability since it does not require to operate a node. It can be assumed that this will be the common way.
 
-DID id collusion
+Additionally to the web wallet, an Ardor node provides various [REST APIs](https://ardor.jelurida.com/test) to interact with the blockchain. The reference implementation makes use of these APIs to provide an easy and error preventive way for processing the CRUD operations.
+
+When using a remote node (a node only accessible via the internet), the actor must ensure to communicate via a secure TLS connection.
+
+
+### DID ID Collusion
+
+Due to tracing of a DID attestation with the help of the DID Id, a DID Id collusion where two DIDs are represented with the same DID Id and collide in a DID controller update process would merge these two DIDs and from that point on always resolve to the same DID attestation and therefore the same DID Document. They would be inseparable from that time on.
+
+This can be considered unlikely due to the wide range of 20^62 (20 digits ^ 62 valid characters `[a-zA-Z0-9]`) possible DID Ids with the use of a proper random generator. Intentionally creating the same DID Id and trying to force a DID collision would need to involve the new DID controller since an DID controller update needs to be accept by the next DID controller account.
+
+
+### Resolution Speed
+
+Since following the DID attestation path in a DID resolution process, the path length has major impact to the resolution speed. It is expected to be best practice to control as less DIDs with an account as possible and to use a DID controller account only for the purpose of controlling a DID.
+
+To speed up the resolution process an Ardor node [Plugin](https://ardordocs.jelurida.com/Plugins) or [Lightweight Contract](https://ardordocs.jelurida.com/Lightweight_Contracts) could be developed to process data base operations (looking up transactions) directly on a node. This would save bandwidth and communication time.
+
+
+## Privacy Requirements
+
+All aspects described in the [Privacy Considerations](https://w3c.github.io/did-core/#privacy-considerations) section within the DID specification are applicable to the `bba` DID method.
