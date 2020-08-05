@@ -5,7 +5,7 @@ skinparam ParticipantPadding 15
 
 participant "Requester" as REQ
 participant "DID Resolver" as RES
-box "ARDOR Blockchain" #WhiteSmoke
+box "Ardor Blockchain" #WhiteSmoke
     participant "Account" as ATTE
     participant "New Account" as NATTE
     participant "Tx Resolver" as TXR
@@ -14,7 +14,7 @@ end box
 
 
 
-REQ -> RES: request DID resolution\n(did:bba:<txh_d>)
+REQ -> RES: request DID Document\n(did:bba:<txh_d>)
 |||
 
 
@@ -51,9 +51,9 @@ end
 
 == DID Document Template Retrieval\n(Ardor Cloud Storage) ==
 
-RES -> RES: extract cloud storage tx hash (txh_s)
-RES -> STR: get DID Document Template (txh_s)
-RES -> RES: check if DID Document Template is self-set\n(by one of the found DID controllers)
+RES -> RES: extract cloud storage\ntx hash (txh_s)
+RES -> STR: get DID Document\nTemplate (txh_s)
+RES -> RES: check if DID Document\nTemplate is self-set\n(by one of the found\nDID controllers)
 |||
 
 
