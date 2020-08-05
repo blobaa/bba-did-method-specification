@@ -64,7 +64,7 @@ The `bba` DID method aims to enable the [Ardor](https://ardorplatform.org) block
 
 DID and DID Document handling is decoupled so that multiple DID Document storages can be defined and integrated to store DID Document Templates (DID Documents without a DID reference). In its current state, the `bba` DID method defines only one storage type (Ardor Cloud Storage).
 
-In the following, `bba` DID method compliant account properties are called DID attestations. An account property is method compliant if it aligns to the data model described in the DID Attestation Data Fields section and is self-set. A self-set account property is a property where the sender and the receiver are the same account.
+In the following, `bba` DID method compliant account properties are called DID attestations. An account property is `bba` DID method compliant if it aligns to the data model described in the DID Attestation Data Fields section and is self-set. A self-set account property is a property where sender and receiver accounts are identical.
 
 
 ## DID Attestation Data Fields
@@ -74,7 +74,7 @@ Since the `bba` method utilizes the account property feature, most of its data f
 
 ### DID Id
 
-The only data field not embedded in the *value* key/value pair that is used to determine a specific DID is the **DID Id**. It represents the value of the *property* key/value pair and is used to provide the ability to control multiple DIDs with one account. To indicate that a property is a DID attestation, the property value starts with the prefix *did://*, followed by a unique, case-sensitive, 20-character long  alphanumeric DID Id. An example: `did://EZVDomDNygTr79QXKnzE`
+The only data field not embedded in the *value* key/value pair that is used to determine a specific DID is the **DID Id**. It represents the value of the *property* key/value pair and is used to provide the ability to control multiple DIDs with one account. To indicate that a property is a DID attestation, the property value starts with the prefix *did://*, followed by a unique, case-sensitive, 20-character long  alphanumeric DID Id. For example: `did://EZVDomDNygTr79QXKnzE`
 
 
 ### Data Field Concatenation
@@ -236,9 +236,9 @@ Creating and registering a `bba` DID involves multiple steps, as shown in the fi
 
 As a precondition it is assumed that the DID controller has an Ardor account created and access to the DDOT one wants to link to the DID.
 
-The first step in the creation process is to store the DDOT with a supported storage mechanism. The Ardor Cloud Storage mechanism is used here. To store the DDOT, the DID controller must create a data cloud transaction, as explained in the Ardor Cloud Storage section, and memories the full hash `txh_s` of the transaction to associate the DDOT with the DID. A sample transaction is available [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=d50168874504b75afa2880f62ef20c9a2b9b9d8e1dc846c6802fb857462a8dd5).
+The first step in the creation process is to store the DDOT with a supported storage mechanism. The Ardor Cloud Storage mechanism is used here. To store the DDOT, the DID controller must create a data cloud transaction, as explained in the Ardor Cloud Storage section, and memories the transaction full hash `txh_s` to associate the DDOT with the DID. A sample transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=d50168874504b75afa2880f62ef20c9a2b9b9d8e1dc846c6802fb857462a8dd5).
 
-The next step is to register the DID. To do so, the DID controller creates a DID attestation for the Ardor account one controls, with a newly generated DID Id and the storage transaction hash `txh_s` as a DDOT reference. A sample transaction is available [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e).
+The next step is to register the DID. To do so, the DID controller creates a DID attestation for the Ardor account the controller controls with a newly generated DID Id and the storage transaction hash `txh_s` as a DDOT reference. A sample transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e).
 
 The last step is to create the DID string. The DID string can now be created by concatenating the DID prefix `did:bba:` with the network character on which the DID was registered and the full hash `txh_d` of the authentication transaction in the following way: `did:baa:<m or empty (without leading ':') for mainnet / t for testnet>:txh_d` An example DID is `did:baa:t:0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e`.
 
@@ -257,7 +257,7 @@ To change a DID document, the corresponding DDOT must be updated. This is done u
 *DDOT update workflow*
 
 
-The DID controller stores the new DDOT with one of the support storage mechanisms and updates the current attestation with the new DDOT reference. A sample transaction is available [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=26d3c955009090f971d862994beee8cc5afda82c5ed1fbd1849e09a14c1a001f).
+The DID controller stores the new DDOT with one of the support storage mechanisms and updates the current attestation with the new DDOT reference. A sample transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=26d3c955009090f971d862994beee8cc5afda82c5ed1fbd1849e09a14c1a001f).
 
 
 #### DID Controller Update
@@ -268,9 +268,9 @@ To change the DID controller, two attestations are required, as shown below.
 
 *DID controller update workflow*
 
-First, the current DID controller updates its attestation with the Ardor account of the new DID controller. To do so, one replaces the redirect account with the 20 account characters of the new DID controller account and sets the state character to `d`. A sample transaction is available [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=b33dabe2232218bdbf38112e830f51bf32334d1691894bbdcd6012d8ea5ad932).
+First, the current DID controller updates its attestation with the Ardor account of the new DID controller. To do so, one replaces the redirect account with the 20 account characters of the new DID controller account and sets the state character to `d`. A sample transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=b33dabe2232218bdbf38112e830f51bf32334d1691894bbdcd6012d8ea5ad932).
 
-The second step is to *accept* the delegation of control by creating a confirmation with the new controller account in form of a DID attestation. This attestation must equal to the pre-updated DID attestation of the current DID controller account. A sample transaction is available [here](https://testardor.jelurida.com/index.html?account=ARDOR-YQ26-W5RK-6ATW-G9HRT&chain=IGNIS&modal=transaction_info_modal&fullhash=bf8a1f655d615df8f254c757cc710585cf5507448b620bacaf72291a014a456b).
+The second step is to *accept* the delegation of control by creating a confirmation with the new controller account in form of a DID attestation. This attestation must equal the pre-updated DID attestation of the current DID controller account. A sample transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-YQ26-W5RK-6ATW-G9HRT&chain=IGNIS&modal=transaction_info_modal&fullhash=bf8a1f655d615df8f254c757cc710585cf5507448b620bacaf72291a014a456b).
 
 
 ### Deactivate
@@ -281,12 +281,12 @@ Deactivating a DID requires only one attestation update and is shown in the figu
 
 *DID deactivation workflow*
 
-The DID controller only needs to set the state field of the DID attestation to `i`, which sets the DID to inactive. An inactive DID cannot be reactivated and is locked in this state. A sample transaction is available [here](https://testardor.jelurida.com/index.html?account=ARDOR-YQ26-W5RK-6ATW-G9HRT&chain=IGNIS&modal=transaction_info_modal&fullhash=3149f135e6121534878dbd7ef6a17cf274c0ac07e282607621a2078dec148b46).
+The DID controller only needs to set the state field of the DID attestation to `i`, which sets the DID to inactive. An inactive DID cannot be reactivated and is locked in this state. A sample transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-YQ26-W5RK-6ATW-G9HRT&chain=IGNIS&modal=transaction_info_modal&fullhash=3149f135e6121534878dbd7ef6a17cf274c0ac07e282607621a2078dec148b46).
 
 
 ### Read (Resolve)
 
-The DID resolution process for solving a `baa` DID consists mainly of three tasks, as shown below.
+The DID resolution process for solving `baa` DIDs consists mainly of three tasks, as shown below.
 
 ![](../plantuml/out/did-resolve.svg)
 
@@ -323,7 +323,7 @@ A DID controller is always represented as an Ardor account and uses Ardor's nati
 
 Ardor provides mechanisms that can help to contain control in case of key compromise ([Phasing Transactions](https://ardordocs.jelurida.com/Phasing_Transactions)) as well as to restore keys ([Shamir's Secret Sharing](https://ardordocs.jelurida.com/Secret_Sharing) or [HD Wallets](https://ardordocs.jelurida.com/From_Simple_Wallet_to_HD_Wallet/en)).
 
-Losing or compromising a sub keys private key is less of a concern. As long as the DID controller is in possession of the master key, The controller can simply generate a new key and update the DDOT.
+Losing or compromising a sub keys private key is less of a concern. As long as the DID controller is in possession of the master key, the controller can simply generate a new key and update the DDOT.
 
 
 ### Authorization
