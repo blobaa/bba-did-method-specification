@@ -360,7 +360,7 @@ To speed up the resolution process, an Ardor node [Plugin](https://ardordocs.jel
 
 ## Privacy Considerations
 
-All aspects described in the [Privacy Considerations](https://w3c.github.io/did-core/#privacy-considerations) section within the DID specification are applicable to the `bba` DID method. In
+All aspects described in the [Privacy Considerations](https://w3c.github.io/did-core/#privacy-considerations) section within the DID specification are applicable to the `bba` DID method. In addition to that, the following topics must be considered.
 
 
 ### Account Tracing
