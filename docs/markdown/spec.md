@@ -46,13 +46,15 @@ This document is under development and may be updated at any time.
             - [DID Controller Update](#did-controller-update)
         - [Deactivate](#deactivate)
         - [Read (Resolve)](#read-resolve)
-    - [Security Requirements](#security-requirements)
+    - [Security Considerations](#security-considerations)
         - [Key Management](#key-management)
         - [Authorization](#authorization)
         - [Usage](#usage)
-        - [DID ID Collusion](#did-id-collusion)
+        - [DID Id Collusion](#did-id-collusion)
         - [Resolution Speed](#resolution-speed)
-    - [Privacy Requirements](#privacy-requirements)
+    - [Privacy Considerations](#privacy-considerations)
+        - [Account Tracing](#account-tracing)
+        - [DDOT Accessability](#ddot-accessability)
 
 </p>
 </details>
@@ -315,7 +317,7 @@ The last task is to **convert the DDOT into a DID Document** by inserting the DI
 After successfully completing these three tasks, a `bba` DID resolver is able to return a verified DID document to the requester.
 
 
-## Security Requirements
+## Security Considerations
 
 ### Key Management
 
@@ -342,7 +344,7 @@ In addition to the Web Wallet, an Ardor node provides various [REST APIs](https:
 When using a remote node (a node that is only accessible via the Internet), the actor must ensure that the communication takes place over a secure TLS connection.
 
 
-### DID ID Collusion
+### DID Id Collusion
 
 Since a DID attestation is retrieved using the DID Id, a DID Id collusion where two DIDs are represented with the same DID Id and collide during a DID controller update process would merge these two DIDs and, from that moment on, would always retrieve the same DID attestation and thus the same DID Document. They would be inseparable from that point on.
 
@@ -356,6 +358,20 @@ Since the DID attestation path is followed in a DID resolution process, the path
 To speed up the resolution process, an Ardor node [Plugin](https://ardordocs.jelurida.com/Plugins) or [Lightweight Contract](https://ardordocs.jelurida.com/Lightweight_Contracts) could be developed to process database operations (transaction lookups) directly on a node. This would save bandwidth and communication time.
 
 
-## Privacy Requirements
+## Privacy Considerations
 
-All aspects described in the [Privacy Considerations](https://w3c.github.io/did-core/#privacy-considerations) section within the DID specification are applicable to the `bba` DID method.
+All aspects described in the [Privacy Considerations](https://w3c.github.io/did-core/#privacy-considerations) section within the DID specification are applicable to the `bba` DID method. In
+
+
+### Account Tracing
+
+Since the resolution process starts with the DID creator account and passes through all accounts that had control over a DID, correlations between these accounts are observable and cannot be avoided. It is to be expected that whenever an account holder who controls a DID controller account updates the DID controller, the new and the old controller account holder have interacted in some way. This reveals an additional relationship between two or more accounts and could be used in combination with other account relationships (for example, payment transactions) to profile and/or identify an entity. This is also true at DID level when two DID attestations cross. A connection between these two DIDs can then no longer be denied.
+
+Again, to avoid account tracing, it is recommended to control as few DIDs as possible with one account and to use a DID controller account only for the purpose of controlling a DID.
+
+
+### DDOT Accessability
+
+Using the Ardor Data Cloud as DDOT storage has the advantage of tamper resistance, but the disadvantage of data pruning. Data pruning is an Ardor mechanism to prevent blockchain bloat. It replaces prunable data after a configurable time by the corresponding hash in the node database. While account properties are non-prunable data, data from the Data Cloud are prunable. This could lead to a denial of DDOT access.
+
+There are two options to prevent this. One is to retrieve a DDOT from a known and trusted archival node (a node that does not prune its database and therefore does not prune DDOTs) or to operate an own archival node.
