@@ -372,6 +372,6 @@ Again, to avoid account tracing, it is recommended to control as few DIDs as pos
 
 ### DDOT Accessability
 
-Using the Ardor Data Cloud as DDOT storage has the advantage of tamper resistance, but the disadvantage of data pruning. Data pruning is an Ardor mechanism to prevent blockchain bloat. It replaces prunable data after a configurable time by the corresponding hash in the node database. While account properties are non-prunable data, data from the Data Cloud are prunable. This could lead to a denial of DDOT access.
+Using the Ardor Data Cloud as DDOT storage has the advantage of tamper resistance, but the disadvantage of data pruning. Data pruning is an Ardor mechanism to prevent blockchain bloat. It replaces prunable data after a configurable time by the corresponding hash in the node database. While account properties are non-prunable data, data from the Data Cloud can be pruned. This could lead to a denial of DDOT access.
 
 There are two options to prevent this. One is to retrieve a DDOT from a known and trusted archival node (a node that does not prune its database and therefore does not prune DDOTs) or to operate an own archival node.
