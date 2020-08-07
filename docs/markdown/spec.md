@@ -1,7 +1,6 @@
 # BBA DID Method Specification
 
 This document specifies the `bba` DID method as part of the [Blobaa](https://github.com/blobaa) project. It conforms to the [DID Core Specification](https://www.w3.org/TR/2020/WD-did-core-20200731/) (W3C Working Draft 31 July 2020) specified by the [W3C DID Working Group](https://www.w3.org/2019/did-wg/).
- <!-- and has been added to W3Cs [DID method registry](https://w3c.github.io/did-spec-registries/#did-methods). -->
 
 A reference implementation for handling the `bba` CRUD operations is available [here](https://github.com/blobaa/bba-did-method-handler-ts).
 
