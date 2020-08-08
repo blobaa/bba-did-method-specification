@@ -171,7 +171,7 @@ or
 
 **testnet**
 
-`did:bba:t:11764950b0e8e69694831a9860256178a957c1064ca7c5dd8c44a20d384fe00c`
+`did:bba:t:45e6df15dc0a7d91dcccd24fda3b52c3983a214fb0eed0938321c11ec99403cf`
 
 
 ## CRUD Operations
@@ -189,36 +189,50 @@ To create a DID, a DID Document Template is required. It contains the informatio
 The difference between a resolved DID Document and the DID Document Template stored with a storage mechanism is the associated DID. The DDOT does not contain any DID informations about the associated DID. As an example, a valid DID Document Template is shown below:
 ````
 {
-    "@context": [
-        "https://www.w3.org/ns/did/v1",
-        "https://w3id.org/security/v1"
-    ],
-    "id": "",
-    "authentication": [
-        {
-            "id": "#z6MkjAySi1Ajf3cwZntbsmo53dmC8GX1Dm6PLmmBaC6SRuiy",
-            "type": "Ed25519VerificationKey2018",
-            "publicKeyBase58": "5iiQ7kvJKW8UTJ3uCCqECYDCJhF9osr2ekrFjv8RWgwb"
-        }
-    ]
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/v1"
+  ],
+  "id": "",
+  "authentication": [
+    {
+      "id": #zAHd7ePaivnaJLK6feRrmrt1JJZb1t6EdeXrhH63hkn4zpAf3",
+      "type": "RsaVerificationKey2018",
+      "publicKeyPem": "-----BEGIN PUBLIC KEY-----\r\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5rdiNoPlx9PkJ3mCrRB5\r\nWckY5AArfMo5OI4TGP+nN74/tVY2xffyb9CZiJqpfNaYAXcXWJuX/brzYeMaa+sA\r\nbFkOMpY4LwHqYZmOrUWvpW/KcTOfvydOwzRjLjVHmWjHeCy5TdupU649r/YRYjKE\r\niPFh9RanXEbKeTDozyoEcrqdmW3onqFJ+U+b7kUd9ys0y5lf9F/mZmFrP+SZp0D6\r\nKgZC/jUR/ACaSv0jdb710BGROobvanTwXr7dLPVKZxbHAnlnftQ5+4Cjy5zxZO8o\r\n/KjKLSjPuO4l55Pth2oLPH7XT+PFUu/ejva1TcgpJooE96ODHLxmO94dgVxFdvtS\r\neQIDAQAB\r\n-----END PUBLIC KEY-----\r\n"
+    }
+  ],
+  "service": [
+    {
+      "id": "#openid",
+      "type": "OpenIdConnectVersion1.0Service",
+      "serviceEndpoint": "https://openid.example.com/"
+    }
+  ]
 }
 ````
 
-The read operation is later responsible for linking this template to the corresponding DID by inserting the missing DID information into the resolved DID Document. The DID Document created based on the DDOT above and the `bba:t:11764950b0e8e69694831a9860256178a957c1064ca7c5dd8c44a20d384fe00c` DID is shown below.
+The read operation is later responsible for linking this template to the corresponding DID by inserting the missing DID information into the resolved DID Document. The DID Document created based on the DDOT above and the `did:bba:t:45e6df15dc0a7d91dcccd24fda3b52c3983a214fb0eed0938321c11ec99403cf` DID is shown below.
 ````
 {
-    "@context": [
-        "https://www.w3.org/ns/did/v1",
-        "https://w3id.org/security/v1"
-    ],
-    "id": "did:bba:t:11764950b0e8e69694831a9860256178a957c1064ca7c5dd8c44a20d384fe00c",
-    "authentication": [
-        {
-            "id": "did:bba:t:11764950b0e8e69694831a9860256178a957c1064ca7c5dd8c44a20d384fe00c#z6MkjAySi1Ajf3cwZntbsmo53dmC8GX1Dm6PLmmBaC6SRuiy",
-            "type": "Ed25519VerificationKey2018",
-            "publicKeyBase58": "5iiQ7kvJKW8UTJ3uCCqECYDCJhF9osr2ekrFjv8RWgwb"
-        }
-    ]
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/v1"
+  ],
+  "id": "did:bba:t:45e6df15dc0a7d91dcccd24fda3b52c3983a214fb0eed0938321c11ec99403cf",
+  "authentication": [
+    {
+      "id": "did:bba:t:45e6df15dc0a7d91dcccd24fda3b52c3983a214fb0eed0938321c11ec99403cf#zAHd7ePaivnaJLK6feRrmrt1JJZb1t6EdeXrhH63hkn4zpAf3",
+      "type": "RsaVerificationKey2018",
+      "publicKeyPem": "-----BEGIN PUBLIC KEY-----\r\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5rdiNoPlx9PkJ3mCrRB5\r\nWckY5AArfMo5OI4TGP+nN74/tVY2xffyb9CZiJqpfNaYAXcXWJuX/brzYeMaa+sA\r\nbFkOMpY4LwHqYZmOrUWvpW/KcTOfvydOwzRjLjVHmWjHeCy5TdupU649r/YRYjKE\r\niPFh9RanXEbKeTDozyoEcrqdmW3onqFJ+U+b7kUd9ys0y5lf9F/mZmFrP+SZp0D6\r\nKgZC/jUR/ACaSv0jdb710BGROobvanTwXr7dLPVKZxbHAnlnftQ5+4Cjy5zxZO8o\r\n/KjKLSjPuO4l55Pth2oLPH7XT+PFUu/ejva1TcgpJooE96ODHLxmO94dgVxFdvtS\r\neQIDAQAB\r\n-----END PUBLIC KEY-----\r\n"
+    }
+  ],
+  "service": [
+    {
+      "id": "did:bba:t:45e6df15dc0a7d91dcccd24fda3b52c3983a214fb0eed0938321c11ec99403cf#openid",
+      "type": "OpenIdConnectVersion1.0Service",
+      "serviceEndpoint": "https://openid.example.com/"
+    }
+  ]
 }
 ````
 
