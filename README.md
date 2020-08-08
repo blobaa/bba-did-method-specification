@@ -16,7 +16,7 @@ The `bba` DID method was added to the official DID method register.
 
 - [BBA Specification](docs/markdown/spec.md)
 - [Reference Implementation](https://github.com/blobaa/bba-did-method-handler-ts)
-- [Web UI for CRUD Operations](https://dev.uniresolver.io)
+- [Web UI for CRUD Operations](https://bba.blobaa.dev)
 <!-- - [Universal Resolver](https://dev.uniresolver.io) -->
 
 
