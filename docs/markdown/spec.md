@@ -124,7 +124,7 @@ The storage type character indicates the storage mechanism used to store and ret
 
 #### Ardor Cloud Storage
 
-At the current state, only the Ardor Cloud Storage mechanism is defined. It uses Ardors [Data Cloud](https://ardordocs.jelurida.com/Data_Cloud) feature to store a stringified DDOT JSON in plain text within a transaction. To be recognized as a `bba` method compliant cloud data, the cloud data name field must be set to `bba-did-document-template`. The transaction full hash value is then used as the DDOT reference and can later be used to retrieve the data cloud transaction and thus the DDOT object.
+At the current state, only the Ardor Cloud Storage mechanism is defined. It uses Ardors [Data Cloud](https://ardordocs.jelurida.com/Data_Cloud) feature to store a stringified DDOT JSON in plain text within a transaction. The transaction full hash value is then used as the DDOT reference and can later be used to retrieve the data cloud transaction and thus the DDOT object.
 
 
 The following table shows the storage type characters that are used to represent the storage types:
