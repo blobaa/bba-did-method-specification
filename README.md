@@ -11,10 +11,10 @@ The `bba` DID method is listed in the official DID method registry.
 
 ### BBA Related
 
-- [BBA DID Method Specification](docs/markdown/spec.md)
+- [DID Method Specification](docs/markdown/spec.md)
 - [Reference Implementation](https://github.com/blobaa/bba-did-method-handler-ts)
 - [Web UI for CRUD Operations](https://wubco.blobaa.dev)
-<!-- - [Universal Resolver](https://dev.uniresolver.io) -->
+- [DID Driver](https://github.com/blobaa/bba-did-driver) for the [Universal Resolver](https://dev.uniresolver.io)
 
 
 ### General
