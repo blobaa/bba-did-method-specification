@@ -2,7 +2,7 @@
 
 This document specifies the `bba` DID method as part of the [Blobaa](https://github.com/blobaa) project. It conforms to the [DID Core Specification](https://www.w3.org/TR/2020/WD-did-core-20200731/) (W3C Working Draft 31 July 2020) specified by the [W3C DID Working Group](https://www.w3.org/2019/did-wg/).
 
-A reference implementation for handling the `bba` CRUD operations is available [here](https://github.com/blobaa/bba-did-method-handler-ts).
+A reference implementation for handling the `bba` CRUD operations is available [here](https://github.com/blobaa/bba-did-method-handler-ts). More resources are listed within the [README](../../README.md) file.
 
 
 ## Version
@@ -255,7 +255,7 @@ The first step in the creation process is to store the DDOT with a supported sto
 
 The next step is to register the DID. To do so, the DID controller creates a DID attestation for the Ardor account the controller controls with a newly generated DID Id and the storage transaction hash `txh_s` as a DDOT reference. A sample transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e).
 
-The last step is to create the DID string. The DID string can now be created by concatenating the DID prefix `did:bba:` with the network character on which the DID was registered and the full hash `txh_d` of the authentication transaction in the following way: `did:baa:<m or empty (without leading ':') for mainnet / t for testnet>:txh_d` An example DID is `did:baa:t:0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e`.
+The last step is to create the DID string. The DID string can now be created by concatenating the DID prefix `did:bba:` with the network character on which the DID was registered and the full hash `txh_d` of the authentication transaction in the following way: `did:bba:<m or empty (without leading ':') for mainnet / t for testnet>:txh_d` An example DID is `did:bba:t:0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e`.
 
 
 ### Update
@@ -301,7 +301,7 @@ The DID controller only needs to set the state field of the DID attestation to `
 
 ### Read (Resolve)
 
-The DID resolution process for solving `baa` DIDs consists mainly of three tasks, as shown below.
+The DID resolution process for solving `bba` DIDs consists mainly of three tasks, as shown below.
 
 ![](../plantuml/out/did-resolve.svg)
 
