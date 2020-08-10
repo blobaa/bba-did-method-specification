@@ -19,12 +19,13 @@ The `bba` DID method is listed in the official DID method registry.
 
 ### General
 
-- [DID Core Specification](https://www.w3.org/TR/did-core/)
 - [DID Method Registry](https://w3c.github.io/did-spec-registries/#did-methods)
+- [DID Core Specification](https://www.w3.org/TR/did-core/)
 - [VC Specification](https://www.w3.org/TR/vc-data-model/)
 - [SSI Book](https://www.manning.com/books/self-sovereign-identity)
 - [Trust over IP Stack](https://trustoverip.org/wp-content/uploads/sites/98/2020/05/toip_introduction_050520.pdf)
 - [DPKI Whitepaper](https://www.weboftrust.info/downloads/dpki.pdf)
+
 
 ## Contributing
 
