@@ -2,7 +2,7 @@
 
 This document specifies the `bba` DID method as part of the [Blobaa](https://github.com/blobaa) project. It conforms to the [DID Core Specification](https://www.w3.org/TR/2020/WD-did-core-20200731/) (W3C Working Draft 31 July 2020) specified by the [W3C DID Working Group](https://www.w3.org/2019/did-wg/).
 
-A reference implementation for handling the `bba` CRUD operations is available [here](https://github.com/blobaa/bba-did-method-handler-ts). More resources are listed within the [README](../../README.md) file.
+A reference implementation for handling the `bba` CRUD operations is available [here](https://github.com/blobaa/bba-did-method-handler-ts). A website wrapping the `bba` handler into a human friendly UI is accessible [here](https://wubco.blobaa.dev). More resources are listed within the [README](../../README.md) file.
 
 
 ## Version
