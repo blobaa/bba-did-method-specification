@@ -9,7 +9,7 @@ This repository contains the `bba` DID method specification. It uses the Ardor b
 
 A DID is a self-controlled persistent identifier and can be resolved into a DID Document. A DID Document contains publicly available information (usually in form of public keys and service endpoints for further interaction) that is associated with a DID subject. A DID subject is the entity a DID identifies and is usually identical to the DID controller. Since information inside a DID Document is cryptographically linked to a DID, the DID controller can use it for authentication, assertion and/or proof of personally identifiable information (PII). PIIs are generally not stored in DID Documents but are embedded in Verifiable Credentials (VCs). A PII containing VC also includes the DID of the subject the PII belongs to and is therefore bound to that DID. DIDs as unique identifier and VCs as verifiable containers for PIIs are the two pillars of Self-Sovereign Identity (SSI).
 
-The `bba` DID method is included in the official DID Method Registry.
+The `bba` DID method is listed in the official DID Method Registry.
 
 
 ## Resources
