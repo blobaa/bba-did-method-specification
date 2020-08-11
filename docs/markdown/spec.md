@@ -61,7 +61,7 @@ This document is under development and may be updated at any time.
 
 ## Introduction
 
-The `bba` DID method aims to enable the [Ardor](https://ardorplatform.org) blockchain to act as a [DPKI](https://www.weboftrust.info/downloads/dpki.pdf) within the [SSI](https://www.manning.com/books/self-sovereign-identity) ecosystem. It runs on the independent [IGNIS](https://www.jelurida.com/ignis) child chain and utilizes Ardors [Account Properties](https://ardordocs.jelurida.com/Account_Properties) feature to manage DIDs and corresponding DID controllers. A DID controller is always represented in form of an Ardor account and is by default separated from the public keys (if present) embedded in a resolved DID Document. Think of a master key controlling the DID operations create, update and deactivate. A DID controller always corresponds to exactly one Ardor account, whereas one Ardor account can control multiple DIDs.
+The `bba` DID method aims to enable the [Ardor](https://ardorplatform.org) blockchain to act as a [DPKI](https://www.weboftrust.info/downloads/dpki.pdf) within the [SSI](https://www.manning.com/books/self-sovereign-identity) ecosystem. It runs on the independent [IGNIS](https://www.jelurida.com/ignis) child chain and utilizes Ardors [Account Properties](https://ardordocs.jelurida.com/Account_Properties) feature to manage DIDs and corresponding DID controllers. A DID controller is always represented in form of an Ardor account and is by default separated from the public keys (if present) embedded in a DID Document. Think of a master key controlling the DID operations create, update and deactivate. A DID controller always corresponds to exactly one Ardor account, whereas one Ardor account can control multiple DIDs.
 
 DID and DID Document handling is decoupled so that multiple DID Document storages can be defined and integrated to store DID Document Templates (DID Documents without a DID reference). In its current state, the `bba` DID method defines only one storage type (Ardor Cloud Storage).
 
@@ -75,7 +75,7 @@ Since the `bba` method utilizes the account property feature, most of its data f
 
 ### DID Id
 
-The only data field not embedded in the *value* key/value pair that is used to determine a specific DID is the **DID Id**. It represents the value of the *property* key/value pair and is used to provide the ability to control multiple DIDs with one account. To indicate that a property is a DID attestation, the property value starts with the prefix *did://*, followed by a unique, case-sensitive, 20-character long  alphanumeric DID Id. For example: `did://EZVDomDNygTr79QXKnzE`
+The only data field not embedded in the *value* key/value pair and used to determine a specific DID is the **DID Id**. It represents the value of the *property* key/value pair and is used to provide the ability to control multiple DIDs with one account. To indicate that a property is a DID attestation, the property value starts with the prefix *did://*, followed by a unique, case-sensitive, 20-character long  alphanumeric Id. For example: `did://EZVDomDNygTr79QXKnzE`
 
 
 ### Data Field Concatenation
@@ -155,7 +155,7 @@ ardor-network = "m" / "t"
 ardor-tx-hash = 64HEXDIG
 ```
 
-`bba` DIDs can refer either to Ardor's test network or to the main network. If no network is specified, the main network is assumed.
+`bba` DIDs can refer either to Ardor's test network or main network. If no network is specified, the main network is assumed.
 
 A `bba` DID contains the full hash of the first attestation transaction as a starting point and identifier. Due to the transaction hash as a unique identifier, it can be assumed that `bba` DIDs are globally unique.
 
@@ -249,13 +249,13 @@ Creating and registering a `bba` DID involves multiple steps, as shown in the fi
 
 *DID creation workflow*
 
-As a precondition it is assumed that the DID controller has an Ardor account created and access to the DDOT one wants to link to the DID.
+As a precondition it is assumed that the DID controller has an Ardor account created and has access to the DDOT one wants to link to the DID.
 
 The first step in the creation process is to store the DDOT with a supported storage mechanism. The Ardor Cloud Storage mechanism is used here. To store the DDOT, the DID controller must create a data cloud transaction, as explained in the Ardor Cloud Storage section, and memories the transaction full hash `txh_s` to associate the DDOT with the DID. A sample transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=d50168874504b75afa2880f62ef20c9a2b9b9d8e1dc846c6802fb857462a8dd5).
 
 The next step is to register the DID. To do so, the DID controller creates a DID attestation for the Ardor account the controller controls with a newly generated DID Id and the storage transaction hash `txh_s` as a DDOT reference. A sample transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e).
 
-The last step is to create the DID string. The DID string can now be created by concatenating the DID prefix `did:bba:` with the network character on which the DID was registered and the full hash `txh_d` of the authentication transaction in the following way: `did:bba:<m or empty (without leading ':') for mainnet / t for testnet>:txh_d` An example DID is `did:bba:t:0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e`.
+The last step is to create the DID string. The DID string can now be created by concatenating the DID prefix `did:bba:` with the network character on which the DID was registered and the full hash `txh_d` of the authentication transaction in the following way: `did:bba:<m or empty (without leading ':') for mainnet / t for testnet>:txh_d`. An example DID is `did:bba:t:0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e`.
 
 
 ### Update
@@ -265,7 +265,7 @@ Two update procedures are defined. One for updating a DID Document Template and 
 
 #### DID Document Template Update
 
-To change a DID document, the corresponding DDOT must be updated. This is done using almost the same workflow as described in the Create section and illustrated in the figure below. Again, it is assumed that a DID controller has been created/is in possession of the new DDOT that should replace the current DDOT.
+To change a DID Document, the corresponding DDOT must be updated. This is done by using almost the same workflow as described in the Create section and illustrated in the figure below. Again, it is assumed that a DID controller has been created/is in possession of the new DDOT that should replace the current DDOT.
 
 ![](../plantuml/out/did-document-template-update.svg)
 
@@ -312,18 +312,18 @@ The first task is to **retrieve the current DID attestation** and consists of th
 1. retrieve the tranaction identified by the transaction full hash `txh_d` as part of the DID string
 2. check if the returned transaction represents a DID attestation
 3. continue with step 6.
-4. get the *delegation accepted* DID attestation that was created in the DID controller update process
+4. get the *delegation acceptance* DID attestation that has been created in the DID controller update process
 5. treat the new account as the current account
 6. check if the DID attestation state is active
 7. retrieve the DID attestations that has been set after the current DID attestation
 8. sort the found DID attestations from the oldest (closest to the current attestation) to the newest
-9. loop over the DID attestations found in step 7.
+9. loop over the DID attestations sorted in step 8.
     1. treat the found attestation as the current attestation
     2. check if the DID attestation state is deprecated. If so, stop the loop.
     3. check if the DID attestation state is inactive. If so, stop the whole resolution process.
 10. check if the DID attestation state is active. If so, continue with the resolution process. Otherwise, continue with step 4.
 
-The second task is to **retrieve the DID Document Template**. This is done by determining the storage mechanism specified by the storage type field and retrieving the DDOT using the DDOT reference string.
+The second task is to **retrieve the DID Document Template**. This is done by determining the storage mechanism specified by the storage type field and retrieving the DDOT with the appropriated storage mechanism and the DDOT reference string.
 
 The last task is to **convert the DDOT into a DID Document** by inserting the DID string information.
 
@@ -334,7 +334,7 @@ After successfully completing these three tasks, a `bba` DID resolver is able to
 
 ### Key Management
 
-A DID controller is always represented as an Ardor account and uses Ardor's native keys as its master key (which uses the elliptic curve Curve25519). When an Ardor account is created, a mnemonic passphrase is created from which the private key is derived. The loss of this private key or its disclosure to other parties means the loss of control over the DID and therefore over the DID document. 
+A DID controller is always represented as an Ardor account and uses Ardor's native keys as its master key (which is based on the elliptic curve Curve25519). When an Ardor account is created, a mnemonic passphrase is created from which the private key is derived. The loss of this private key or its disclosure to other parties means the loss of control over the DID and therefore over the DID document. 
 
 Ardor provides mechanisms that can help to contain control in case of key compromise ([Phasing Transactions](https://ardordocs.jelurida.com/Phasing_Transactions)) as well as to restore keys ([Shamir's Secret Sharing](https://ardordocs.jelurida.com/Secret_Sharing) or [HD Wallets](https://ardordocs.jelurida.com/From_Simple_Wallet_to_HD_Wallet/en)).
 
@@ -345,23 +345,23 @@ Losing or compromising a sub keys private key is less of a concern. As long as t
 
 Because the `bba` DID method is composed of transactions issued in a specific order and with specific content, it cannot prevent a DID controller from acting maliciously and creating wrong statements about a DID. However, the validity and authority of DID operations is proven in the resolution process.
 
-It should be noted that no sub key authenticity check is performed in the DID registration and DDOT binding process. This must be done either by a storage mechanism at DDOT storage time or dynamically by a DID consumer. The latter option is preferred since it ensures that a DID controller is in possession of the private key at the time of interaction.
+It should be noted that no sub key authenticity check is performed in the DID registration and DDOT binding process. This must be done either by a storage mechanism at DDOT storage time or dynamically by a DID consumer. The latter is preferred since it ensures that a DID controller is in possession of the private key at the time of interaction.
 
 
 ### Usage
 
-Although not recommended and error-prone, a DID controller or resolver (actor) could use the official [Ardor Web Wallet](https://ardor.jelurida.com/index.html) to process the `bba` CRUD operations. This can be done by running an own node or by using an existing node trusted by an actor. The latter involves a compromise between security and usability. It lowers security by adding an additional intermediate step (the node runner) between the actor and the blockchain, but increases usability since it does not require to operate a node. It can be assumed that this will be the common way.
+Although not recommended and error-prone, a DID controller or resolver (actor) could use the official [Ardor Web Wallet](https://ardor.jelurida.com/index.html) to process the `bba` CRUD operations. This can be done by running an own node or by using an existing node trusted by an actor. The latter involves a compromise between security and usability. It lowers security by adding an additional intermediate (the node runner) between the actor and the blockchain, but increases usability since it does not require to operate a node. It can be assumed that this will be the common way.
 
-In addition to the Web Wallet, an Ardor node provides various [REST APIs](https://ardor.jelurida.com/test) to interact with the blockchain. The reference implementation uses these APIs to provide an easy and error-preventing way to process the CRUD operations.
+In addition to the Web Wallet, an Ardor node provides various [REST APIs](https://ardor.jelurida.com/test) to interact with the blockchain. The reference implementation uses these APIs to provide an easy and error-preventing way for processing the CRUD operations.
 
 When using a remote node (a node that is only accessible via the Internet), the actor must ensure that the communication takes place over a secure TLS connection.
 
 
 ### DID Id Collusion
 
-Since a DID attestation is retrieved using the DID Id, a DID Id collusion where two DIDs are represented with the same DID Id and collide during a DID controller update process would merge these two DIDs and, from that moment on, would always retrieve the same DID attestation and thus the same DID Document. They would be inseparable from that point on.
+Since a DID attestation is retrieved using the DID Id, a DID Id collusion where two DIDs are represented with the same DID Id and collide during a DID controller update process would merge these two DIDs and, from that moment on, would always return the same DID attestation and thus the same DID Document. They would be inseparable from that point on.
 
-This can be considered unlikely due to the wide range of 20^62 (20 digits ^ 62 valid characters `[a-zA-Z0-9]`) possible DID Ids when using a suitable random number generator. Deliberately creating the same DID Id and attempting to force a DID collision would have to involve the new DID controller, since a DID controller update must be accepted by the new controller account.
+This can be considered unlikely due to the wide range of 20^62 (20 digits ^ 62 valid characters `[a-zA-Z0-9]`) possible DID Ids when using a suitable random number generator. Deliberately creating the same DID Id and attempting to force a DID collision would need to involve the new DID controller, since a DID controller update must be accepted by the new controller account.
 
 
 ### Resolution Speed
@@ -378,7 +378,7 @@ All aspects described in the [Privacy Considerations](https://w3c.github.io/did-
 
 ### Account Tracing
 
-Since the resolution process starts with the DID creator account and passes through all accounts that had control over a DID, correlations between these accounts are observable and cannot be avoided. It is to be expected that whenever an account holder who controls a DID controller account updates the DID controller, the new and the old controller account holder have interacted in some way. This reveals an additional relationship between two or more accounts and could be used in combination with other account relationships (for example, payment transactions) to profile and/or identify an entity. This is also true at DID level when two DID attestations cross. A connection between these two DIDs can then no longer be denied.
+Since the resolution process starts with the DID creator account and passes through all accounts that had control over a DID, correlations between these accounts are observable and cannot be avoided. It is to be expected that whenever an account holder who controls a DID controller account updates the DID controller, the new and the old controller account holder have interacted in some way. This reveals an additional relationship between two or more accounts and could be used in combination with other account relationships (for example, payment transactions) to profile and/or identify an entity. This is also true at DID level when two DID attestations cross. A connection between those two DIDs is then no longer deniable.
 
 Again, to avoid account tracing, it is recommended to control as few DIDs as possible with one account and to use a DID controller account only for the purpose of controlling a DID.
 
