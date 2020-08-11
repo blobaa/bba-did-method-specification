@@ -2,14 +2,19 @@
 
 A DID method based on the Ardor blockchain.
 
-This repository contains the `bba` DID method specification. It uses the Ardor blockchain as a decentralized public-key infrastructure (DPKI) for creating and managing decentralized identifiers (DIDs). A DID is a self-controlled persistent identifier and can be resolved into a DID Document. A DID document contains publicly available information (usually in the form of public keys and service endpoints for further interaction) associated with a DID-representing entity. Because this information is cryptographically linked to a DID, a DID controller may use it for authentication, assertion and/or proof of personally identifiable information (PII). PIIs are generally not stored in DID documents but are embedded in Verifiable Credentials (VCs). VCs and DIDs are the pillars of Self-Sovereign Identity (SSI).
+This repository contains the `bba` DID method specification. It uses the Ardor blockchain as a decentralized public-key infrastructure (DPKI) to create and manage decentralized identifiers (DIDs). 
 
-The `bba` DID method is listed in the official DID method registry.
+
+## Background
+
+A DID is a self-controlled persistent identifier and can be resolved into a DID Document. A DID Document contains publicly available information (usually in form of public keys and service endpoints for further interaction) that is associated with a DID subject. A DID subject is the entity a DID identifies and is usually also the DID controller. Since the information inside a DID Document is cryptographically linked to a DID, the DID controller can use it for authentication, assertion and/or proof of personally identifiable information (PII). PIIs are generally not stored in DID Documents but are embedded in Verifiable Credentials (VCs). A PII containing VC also includes the DID of the subject the PII belongs to and is therefore bound to that DID. DIDs as unique identifier and VCs as verifiable container for PII are the two pillars of Self-Sovereign Identity (SSI).
+
+The `bba` DID method is included in the official DID Method Registry.
 
 
 ## Resources
 
-### BBA Related
+### BBA Method Related
 
 - [DID Method Specification](docs/markdown/spec.md)
 - [Reference Implementation](https://github.com/blobaa/bba-did-method-handler-ts)
