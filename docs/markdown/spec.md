@@ -49,7 +49,7 @@ This document is under development and may be updated at any time.
         - [Key Management](#key-management)
         - [Authorization](#authorization)
         - [Usage](#usage)
-        - [DID Id Collusion](#did-id-collusion)
+        - [DID Id Collision](#did-id-collision)
         - [Resolution Speed](#resolution-speed)
     - [Privacy Considerations](#privacy-considerations)
         - [Account Tracing](#account-tracing)
@@ -251,7 +251,7 @@ Creating and registering a `bba` DID involves multiple steps, as shown in the fi
 
 As a precondition it is assumed that the DID controller has an Ardor account created and has access to the DDOT one wants to link to the DID.
 
-The first step in the creation process is to store the DDOT with a supported storage mechanism. The Ardor Cloud Storage mechanism is used here. To store the DDOT, the DID controller must create a data cloud transaction, as explained in the Ardor Cloud Storage section, and memories the transaction full hash `txh_s` to associate the DDOT with the DID. A sample transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=d50168874504b75afa2880f62ef20c9a2b9b9d8e1dc846c6802fb857462a8dd5).
+The first step in the creation process is to store the DDOT with a supported storage mechanism. The Ardor Cloud Storage mechanism is used here. To store the DDOT, the DID controller must create a data cloud transaction, as explained in the Ardor Cloud Storage section, and memorize the transaction full hash `txh_s` to associate the DDOT with the DID. A sample transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=d50168874504b75afa2880f62ef20c9a2b9b9d8e1dc846c6802fb857462a8dd5).
 
 The next step is to register the DID. To do so, the DID controller creates a DID attestation for the Ardor account the controller controls with a newly generated DID Id and the storage transaction hash `txh_s` as a DDOT reference. A sample transaction can be found [here](https://testardor.jelurida.com/index.html?account=ARDOR-S27P-EHWT-8D2L-937R7&chain=IGNIS&modal=transaction_info_modal&fullhash=0239684aef4c0d597b4ca5588f69327bed1fedfd576de35e5099c32807bb520e).
 
@@ -357,9 +357,9 @@ In addition to the Web Wallet, an Ardor node provides various [REST APIs](https:
 When using a remote node (a node that is only accessible via the Internet), the actor must ensure that the communication takes place over a secure TLS connection.
 
 
-### DID Id Collusion
+### DID Id Collision
 
-Since a DID attestation is retrieved using the DID Id, a DID Id collusion where two DIDs are represented with the same DID Id and collide during a DID controller update process would merge these two DIDs and, from that moment on, would always return the same DID attestation and thus the same DID Document. They would be inseparable from that point on.
+Since a DID attestation is retrieved using the DID Id, a DID Id collision where two DIDs are represented with the same DID Id and collide during a DID controller update process would merge these two DIDs and, from that moment on, would always return the same DID attestation and thus the same DID Document. They would be inseparable from that point on.
 
 This can be considered unlikely due to the wide range of 20^62 (20 digits ^ 62 valid characters `[a-zA-Z0-9]`) possible DID Ids when using a suitable random number generator. Deliberately creating the same DID Id and attempting to force a DID collision would need to involve the new DID controller, since a DID controller update must be accepted by the new controller account.
 
