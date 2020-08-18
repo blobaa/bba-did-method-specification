@@ -265,7 +265,7 @@ Two update procedures are defined. One for updating a DID Document Template and 
 
 #### DID Document Template Update
 
-To change a DID Document, the corresponding DDOT must be updated. This is done by using almost the same workflow as described in the Create section and illustrated in the figure below. Again, it is assumed that a DID controller has been created/is in possession of the new DDOT that should replace the current DDOT.
+To change a DID Document, the corresponding DDOT must be updated. This is done by using almost the same workflow as described in the Create section and illustrated in the figure below. Again, it is assumed that a DID controller has created/is in possession of the new DDOT that should replace the current DDOT.
 
 ![](../plantuml/out/did-document-template-update.svg)
 
