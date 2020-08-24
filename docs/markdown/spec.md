@@ -368,7 +368,7 @@ This can be considered unlikely due to the wide range of 20^62 (20 digits ^ 62 v
 
 Since the DID attestation path is followed in a DID resolution process, the path length has a large influence on the resolution speed. It is expected that it is best practice to control as few DIDs as possible with one account and to use a DID controller account only for the purpose of controlling DIDs.
 
-To speed up the resolution process, an Ardor node [Plugin](https://ardordocs.jelurida.com/Plugins) or [Lightweight Contract](https://ardordocs.jelurida.com/Lightweight_Contracts) could be developed to process database operations (transaction lookups) directly on a node. This would save bandwidth and communication time.
+To speed up the resolution process, a [Lightweight Contract](https://ardordocs.jelurida.com/Lightweight_Contracts) could be developed to process database operations (transaction lookups) directly on a node. This would save bandwidth and communication time.
 
 
 ## Privacy Considerations
