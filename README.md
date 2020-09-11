@@ -20,6 +20,7 @@ The `bba` DID method is listed in the official DID Method Registry.
 - [Reference Implementation](https://github.com/blobaa/bba-did-method-handler-ts)
 - [Web UI for CRUD Operations](https://wubco.blobaa.dev)
 - [DID Driver](https://github.com/blobaa/bba-did-driver) for the [Universal Resolver](https://dev.uniresolver.io)
+- [Article on nxter](https://www.nxter.org/self-sovereign-identity-on-ardor-blockchain/)
 
 
 ### General
